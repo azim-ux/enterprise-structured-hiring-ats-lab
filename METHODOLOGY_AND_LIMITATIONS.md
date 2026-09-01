@@ -2,11 +2,11 @@
 
 ## Build method
 
-The enterprise project was generated from a fixed mathematical contract rather than an employer dataset. APD, all names, IDs, requisitions, dates, scores, events, decisions, and notes are fictional.
+The portfolio simulation was generated from a fixed mathematical contract rather than an employer dataset. APD, all names, IDs, requisitions, dates, scores, events, decisions, and notes are fictional.
 
 ### 1. Define five requisition families
 
-Five job specifications spanning G1–G4 were translated into required competencies, knockout rules, standardized assessments, BARS anchors, stage gates, capacity limits, privacy partitions, and audit evidence. Applicant blocks are fixed at 800, 1,600, 600, 400, and 600 records.
+Five job specifications spanning G1–G4 were translated into required competencies, knockout rules, standardized assessments, BARS anchors, stage gates, capacity limits, proposed privacy partitions, and audit-evidence requirements. Applicant blocks are fixed at 800, 1,600, 600, 400, and 600 records. The privacy partitions and audit controls are reference designs, not runtime enforcement in the static browser demonstration.
 
 ### 2. Generate the 4,000-candidate cohort
 
@@ -51,7 +51,7 @@ A deterministic permutation rule distributes 164 late records through the sequen
 
 ### 6. Reconcile and publish
 
-The acceptance suite verifies row counts, sequential IDs, schemas, foreign keys, per-requisition applications and hires, scoring arithmetic, cohort progression, SLA classification, privacy patterns, embedded JSON parity, pagination controls, and documentation traceability. Both dashboard files embed every CSV value as a JSON string.
+The current four-test acceptance suite verifies ten required assets, selected row counts and governed KPI values, a limited set of privacy/secret/local-path patterns in non-PDF files, and relative `href`/`src` targets in top-level HTML files. It does not yet verify sequential IDs, complete schemas or foreign keys, every composite calculation, per-requisition totals, embedded JSON parity, pagination behavior, PDFs, or documentation traceability. At the audited baseline, both dashboard files embed every CSV value as JSON.
 
 ## Statistical assumptions
 
@@ -95,7 +95,7 @@ DPDP, GDPR, and EEOC sources are governance benchmarks. Applicability varies by 
 
 ### Browser delivery
 
-The source data and application logic are embedded. Tailwind CSS and Chart.js use CDNs; custom CSS and the semantic pipeline remain available if those libraries are not. Very large inline JSON increases file size and parse cost, so a production system would use authenticated server-side pagination and field projection.
+The source data and application logic are embedded. Chart.js 4.4.7 is pinned and self-hosted in `vendor/`; no Tailwind runtime is present, and the dashboard does not request externally hosted executable scripts. Very large inline JSON increases file size and parse cost. The public browser receives the complete synthetic dataset, including cohort fields, even though individual decision views do not display those fields. UI hiding is not access control. Any later API-backed reference implementation would require authenticated server-side pagination and field projection, and this static architecture must never be used with real applicant data.
 
 ## Ethical boundaries
 
@@ -104,4 +104,3 @@ Do not use the synthetic thresholds, scores, cohort labels, or candidate sequenc
 ## Change control
 
 Any source-data change must propagate to both embedded JSON payloads and reconciled documentation. Changes to a rule, threshold, weight, assessment, permission, or retention schedule require a version, rationale, approver, fairness review, UAT evidence, and release record.
-

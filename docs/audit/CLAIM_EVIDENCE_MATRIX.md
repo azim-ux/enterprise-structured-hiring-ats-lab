@@ -13,8 +13,8 @@
 | “Audit-ready” / “auditable operating model” | Traceable documentation and deterministic synthetic data | Partially supported | Prefer “audit-oriented reference design”; no immutable runtime audit trail exists |
 | “Enterprise edition/project/system” | High-volume dataset and governance documentation | Positioning risk | Replace with “enterprise-oriented reference implementation” as work progresses; never “enterprise-ready” |
 | Independently deployable | Static files run locally and on GitHub Pages | Verified for demonstration | Clarify that deployment is static demonstration hosting |
-| Acceptance suite covers schemas, references, formulas, pagination, embedded parity, and slide contract | Current four tests | Unsupported | Correct README now or add the missing tests in Stage 1 |
-| Tailwind CSS and Chart.js use CDNs | Current source and methodology statement | False/stale | Chart.js is vendored; no Tailwind runtime is present |
+| Acceptance suite covers schemas, references, formulas, pagination, embedded parity, and slide contract | Current four tests | Unsupported baseline claim | README corrected on the Stage 0 branch; add the missing tests in Stage 1 |
+| Tailwind CSS and Chart.js use CDNs | Current source and baseline methodology statement | False/stale baseline claim | Methodology corrected on the Stage 0 branch: Chart.js is vendored and no Tailwind runtime is present |
 | Privacy by design | Synthetic-only publish boundary, privacy docs, exact-index scan | Partially supported for a public demo | Not evidence of production privacy engineering or legal compliance |
 | DPDP/GDPR controls | Legal references and proposed workflows | Educational design only | Require jurisdiction-specific professional review before real use |
 | OpenCATS architecture | Workflow is described as OpenCATS-inspired/platform-neutral | Conceptual mapping | No OpenCATS instance, plugin, migration, or integration is included |

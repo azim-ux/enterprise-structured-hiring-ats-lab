@@ -10,7 +10,7 @@ This backlog is evidence-derived. Priority is based on privacy risk, claim integ
 4. Establish one canonical dashboard source/output path and remove the exact duplicate multi-megabyte application payload.
 5. Correct the 375 px document overflow and slide-control overlap; add repeatable viewport assertions.
 6. Add automated accessibility checks plus keyboard, focus-return, dialog, heading, control-name, and chart-alternative tests.
-7. Correct stale/overstated README and methodology claims.
+7. Add automated claim checks so corrected README and methodology statements cannot regress.
 8. Record vendored dependency provenance/checksum and add a scheduled advisory check.
 
 ## Stage 2 — Executable core vertical slice

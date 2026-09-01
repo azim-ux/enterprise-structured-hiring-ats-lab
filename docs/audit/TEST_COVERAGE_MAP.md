@@ -2,7 +2,7 @@
 
 ## Executed automated suite
 
-The repository has one Python module with four `unittest` cases. A clean-clone run passed 4/4 on 2026-09-01.
+The repository has one Python module with four `unittest` cases. A fresh-clone run passed 4/4 on 2026-09-02.
 
 | Test | What it actually asserts | Important omissions |
 |---|---|---|
@@ -13,7 +13,7 @@ The repository has one Python module with four `unittest` cases. A clean-clone r
 
 ## Claim mismatch
 
-The README currently says the acceptance suite checks “exact inventory, schemas, row counts, references, scoring arithmetic, KPI reconciliation, privacy patterns, enterprise pagination controls, embedded JSON parity, and five-slide contract.” The current implementation verifies only part of row counts, KPI reconciliation, basic privacy patterns, required assets, and local HTML link existence.
+At the audited baseline, the README said the acceptance suite checked “exact inventory, schemas, row counts, references, scoring arithmetic, KPI reconciliation, privacy patterns, enterprise pagination controls, embedded JSON parity, and five-slide contract.” The current implementation verifies only part of row counts, KPI reconciliation, basic privacy patterns, required assets, and local HTML link existence. The Stage 0 branch corrects the README to match those four implemented tests.
 
 ## Manual/live baseline coverage
 

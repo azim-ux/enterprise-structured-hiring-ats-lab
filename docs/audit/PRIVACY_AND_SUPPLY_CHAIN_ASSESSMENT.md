@@ -4,13 +4,13 @@
 
 ### Verified public boundary
 
-- Full remote history contains one commit authored with the repository owner’s GitHub noreply identity.
-- An exact-index scan covered all 28 baseline files, including extracted PDF text and metadata.
+- The audited baseline history contains one commit authored with the repository owner’s GitHub noreply identity. The corrected PR branch contains three reachable commits after the correction commit, all using that noreply identity.
+- An exact-index scan covered all 28 baseline files and all 38 corrected PR-branch files, including extracted PDF text and metadata.
 - No personal phone number, Aadhaar, PAN, passport, Emirates ID, private email, credential, secret key, macOS home-directory path, hidden artifact, or broken internal link was detected.
 - Candidate names follow the synthetic pattern `Synthetic Candidate ####`; APD is explicitly fictional.
 - Published PDFs are unencrypted but contain synthetic/public material only. They contain no JavaScript.
 
-This result applies to baseline commit `640406b`; every later change requires the same tracked-file and history checks.
+The baseline findings apply to commit `640406b`; the 38-file result applies to the corrected PR branch. Every later change requires the same tracked-file and history checks.
 
 ### Exposure that is safe only because the data is synthetic
 
@@ -31,7 +31,7 @@ Both dashboard files deliver all 4,000 candidate rows, including demographic coh
 | Client runtime | Vendored Chart.js 4.4.7 | Version is pinned and license preserved |
 | Network-loaded scripts | None in the dashboard | Reduces CDN/runtime dependency risk |
 | Package manifest/lockfile | None | No provenance, checksum, automated update, or reproducible dependency installation workflow |
-| Advisory query | GitHub Advisory Database returned no match for `chart.js@4.4.7` on 2026-09-01 | Point-in-time only; not a guarantee |
+| Advisory query | GitHub Advisory Database returned no match for `chart.js@4.4.7` on 2026-09-02 | Point-in-time only; not a guarantee |
 | Upstream release | Chart.js v4.5.1 is the latest official release observed (published 2025-10-13) | Vendored version is behind upstream; upgrade impact is unassessed |
 | CI dependency scan | None | No continuous detection |
 | Licenses | Repository MIT plus Chart.js MIT notice | Present; research/OpenCATS are referenced but not redistributed |

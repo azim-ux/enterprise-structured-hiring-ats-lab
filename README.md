@@ -1,6 +1,6 @@
-# Enterprise High-Volume Structured Hiring & ATS Lab
+# Enterprise-Oriented Structured Hiring & ATS Reference Implementation
 
-An audit-ready portfolio simulation of a governed hiring system for Apex Precision Dynamics Ltd. (APD), a fictional 70-person precision-manufacturing firm in Aligarh, India. The enterprise edition demonstrates how structured selection, automation, privacy, fairness monitoring, and recruiter operations can remain traceable across **4,000 synthetic candidates**.
+An audit-oriented portfolio simulation for Apex Precision Dynamics Ltd. (APD), a fictional 70-person precision-manufacturing firm in Aligarh, India. It is the static demonstration layer of an **enterprise-oriented structured-hiring reference implementation** in development. It demonstrates how structured selection, automation design, privacy requirements, fairness monitoring, and recruiter operations can remain traceable across **4,000 synthetic candidates**.
 
 ## Standalone release
 
@@ -12,15 +12,15 @@ This repository is an independently deployable, open-source release of the Struc
 
 ## Executive summary
 
-Five requisition families generated 4,000 applications, 986 automated-knockout progressions, 500 fully assessed finalists, and 120 hires. Selection uses a governed 40/40/20 composite of work sample, structured BARS interview, and job-knowledge evidence. The reconciled operating view is **3.0% conversion**, **28.5 average days to fill**, **91.8% feedback-SLA adherence**, and a **0.87 adverse-impact ratio** at the knockout-progression gate.
+The deterministic simulation contains five requisition families, 4,000 applications, 986 modeled knockout progressions, 500 fully assessed finalists, and 120 modeled hires. Its evidence model uses a 40/40/20 composite of work sample, structured BARS interview, and job-knowledge evidence. The reconciled synthetic view is **3.0% conversion**, **28.5 average days to fill**, **91.8% feedback-SLA adherence**, and a **0.87 adverse-impact ratio** at the knockout-progression gate.
 
 Candidate CAND-2026-0013 is the halo-effect control. A subjective impression of 4.60 did not override a governed composite of 3.92; the +0.68 gap triggered evidence review and the candidate was not hired.
 
-All people, identifiers, dates, scores, and events are fictional. Demographic cohorts exist only for aggregated fairness monitoring and are inaccessible to decision-makers.
+All people, identifiers, dates, scores, and events are fictional. Demographic cohort fields are not displayed in individual decision views, but the static public demonstration delivers the complete synthetic dataset to the browser. This is not access control, and the architecture must never be used with real applicant data.
 
 ## Explore the lab
 
-- [Open the enterprise project experience](index.html)
+- [Open the reference-implementation experience](index.html)
 - [Open the high-volume analytics dashboard](dashboard.html)
 - [Open the five-slide case presentation](slides.html)
 - [Download the five-page PDF case study](Structured_Hiring_and_ATS_Architecture_Case_Study.pdf)
@@ -80,7 +80,7 @@ The 4/5ths result is a monitoring signal rather than proof of fairness or lawful
 3. Inspect the three CSV files for row-level evidence.
 4. Run `python3 -m unittest tests/test_repository_integrity.py` from the repository root.
 
-The acceptance suite checks the exact inventory, schemas, row counts, references, scoring arithmetic, KPI reconciliation, privacy patterns, enterprise pagination controls, embedded JSON parity, and five-slide contract.
+The four-test acceptance suite checks ten required assets, selected row counts and governed KPI values, a limited set of privacy/secret/local-path patterns in non-PDF files, and relative `href`/`src` targets in top-level HTML files. It does not currently verify the exact inventory, full schemas and foreign keys, every composite calculation, embedded JSON/CSV parity, browser behavior, PDF contents, or the five-slide contract; those gaps are tracked in the [Stage 0 test-coverage map](docs/audit/TEST_COVERAGE_MAP.md).
 
 ## Interpretation boundary
 
