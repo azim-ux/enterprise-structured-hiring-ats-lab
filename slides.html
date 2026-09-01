@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Five-slide executive case deck for the Structured Hiring and ATS Architecture Lab.">
+  <title>Structured Hiring & ATS Architecture Lab · Case Deck</title>
+  <style>
+    :root { color-scheme: dark; --navy:#07111f; --panel:#0e2034; --ink:#edf4ff; --muted:#9babc0; --teal:#40e0c1; --blue:#6ea8fe; --amber:#f6c86e; --line:rgba(148,163,184,.2); }
+    * { box-sizing:border-box; }
+    html, body { margin:0; min-height:100%; background:#050c16; color:var(--ink); font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    body { overflow:hidden; }
+    .deck { min-height:100vh; position:relative; background:radial-gradient(circle at 8% 4%,rgba(64,224,193,.12),transparent 32rem),radial-gradient(circle at 96% 92%,rgba(110,168,254,.12),transparent 28rem),var(--navy); }
+    .deck::before { content:""; position:fixed; inset:0; pointer-events:none; opacity:.18; background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px); background-size:44px 44px; }
+    .progress-track { position:fixed; z-index:20; left:0; right:0; top:0; height:4px; background:rgba(255,255,255,.06); }
+    #progress-bar { width:20%; height:100%; background:linear-gradient(90deg,var(--teal),var(--blue)); transition:width .35s ease; box-shadow:0 0 18px rgba(64,224,193,.5); }
+    .slide { display:none; position:absolute; inset:0; padding:clamp(52px,7vw,108px); place-content:center; overflow:auto; }
+    .slide.active { display:grid; animation:enter .38s ease both; }
+    @keyframes enter { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+    .frame { width:min(1240px,100%); margin:auto; }
+    .eyebrow { color:var(--teal); font-size:clamp(.68rem,1vw,.85rem); text-transform:uppercase; letter-spacing:.2em; font-weight:800; }
+    h1, h2 { margin:14px 0 20px; letter-spacing:-.055em; line-height:1; }
+    h1 { max-width:1100px; font-size:clamp(3.2rem,8vw,7.2rem); }
+    h2 { max-width:1000px; font-size:clamp(2.3rem,5.5vw,5rem); }
+    .lead { max-width:850px; color:#a9b8ca; font-size:clamp(1rem,1.7vw,1.35rem); line-height:1.65; }
+    .chips { display:flex; flex-wrap:wrap; gap:9px; margin-top:32px; }
+    .chip { border:1px solid var(--line); background:rgba(14,32,52,.7); padding:9px 12px; border-radius:999px; color:#c6d4e5; font-size:.8rem; }
+    .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:34px; }
+    .card { border:1px solid var(--line); border-radius:18px; background:rgba(14,32,52,.78); padding:22px; backdrop-filter:blur(12px); }
+    .card .num { color:var(--teal); font:800 .75rem/1 ui-monospace,SFMono-Regular,monospace; letter-spacing:.08em; }
+    .card h3 { margin:12px 0 9px; font-size:1.05rem; }
+    .card p { margin:0; color:var(--muted); font-size:.86rem; line-height:1.55; }
+    .flow { display:grid; grid-template-columns:repeat(6,1fr); gap:8px; margin-top:32px; }
+    .flow div { min-height:130px; padding:17px 13px; border-radius:14px; background:linear-gradient(160deg,rgba(22,48,75,.95),rgba(12,27,45,.9)); border:1px solid var(--line); }
+    .flow b { display:block; color:var(--teal); font-size:.7rem; margin-bottom:18px; }
+    .flow span { font-weight:750; line-height:1.25; }
+    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:30px; align-items:stretch; margin-top:26px; }
+    .formula { display:grid; place-content:center; min-height:290px; border:1px solid rgba(64,224,193,.2); border-radius:20px; background:linear-gradient(145deg,rgba(64,224,193,.09),rgba(14,32,52,.6)); padding:28px; }
+    .formula code { color:#c8fff4; font:700 clamp(1rem,1.8vw,1.35rem)/1.8 ui-monospace,SFMono-Regular,monospace; }
+    .control-case { min-height:290px; padding:28px; border:1px solid rgba(246,200,110,.22); border-radius:20px; background:linear-gradient(145deg,rgba(246,200,110,.08),rgba(14,32,52,.6)); }
+    .control-case h3 { margin:4px 0 18px; font-size:1.3rem; }
+    .math-row { display:flex; justify-content:space-between; align-items:end; padding:13px 0; border-bottom:1px solid var(--line); color:var(--muted); }
+    .math-row strong { color:white; font-size:1.45rem; }
+    .math-row:last-child strong { color:var(--amber); }
+    .governance { display:grid; grid-template-columns:1.15fr .85fr; gap:18px; margin-top:26px; }
+    .rate-box { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .rate { padding:20px; border-radius:16px; border:1px solid var(--line); background:rgba(14,32,52,.78); }
+    .rate span { color:var(--muted); font-size:.75rem; }
+    .rate strong { display:block; margin-top:8px; font-size:2rem; }
+    .air { grid-column:1/-1; background:linear-gradient(120deg,rgba(64,224,193,.1),rgba(110,168,254,.1)); }
+    .guardrails { margin:0; padding:23px 23px 23px 42px; border-radius:16px; border:1px solid var(--line); background:rgba(14,32,52,.72); color:#b8c5d6; line-height:1.7; }
+    .results { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin:30px 0; }
+    .result { padding:18px 14px; border-radius:15px; border:1px solid var(--line); background:rgba(14,32,52,.75); }
+    .result strong { display:block; font-size:clamp(1.5rem,3vw,2.5rem); letter-spacing:-.04em; }
+    .result span { color:var(--muted); font-size:.73rem; }
+    .next { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+    .next div { padding:17px; border-left:3px solid var(--teal); background:rgba(14,32,52,.52); color:#b7c5d6; font-size:.86rem; line-height:1.5; }
+    .controls { position:fixed; z-index:20; left:clamp(18px,3vw,44px); right:clamp(18px,3vw,44px); bottom:22px; display:flex; justify-content:space-between; align-items:center; pointer-events:none; }
+    .controls button { pointer-events:auto; width:44px; height:44px; border-radius:50%; color:white; border:1px solid var(--line); background:rgba(14,32,52,.85); font-size:1.2rem; cursor:pointer; }
+    .controls button:disabled { opacity:.3; cursor:default; }
+    #slide-counter { color:#8395ab; font:700 .75rem/1 ui-monospace,SFMono-Regular,monospace; letter-spacing:.1em; }
+    .hint { position:fixed; z-index:20; right:clamp(18px,3vw,44px); top:22px; color:#70839b; font-size:.7rem; }
+    @media (max-width:900px) { .flow { grid-template-columns:repeat(3,1fr); } .grid-3,.next { grid-template-columns:1fr; } .two-col,.governance { grid-template-columns:1fr; } .results { grid-template-columns:repeat(3,1fr); } }
+    @media (max-width:600px) { .slide { padding:60px 22px 88px; place-content:start; } .flow { grid-template-columns:1fr 1fr; } .results { grid-template-columns:1fr 1fr; } .hint { display:none; } }
+    @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none !important; transition:none !important; } }
+    @media print {
+      @page { size:13.333in 7.5in; margin:0; }
+      html,body { background:white; overflow:visible; }
+      .deck { background:white; color:#0b1728; }
+      .deck::before,.progress-track,.controls,.hint { display:none !important; }
+      .slide,.slide.active,.slide[aria-hidden="true"] { position:relative !important; display:block !important; width:13.333in; height:7.5in; padding:.48in .62in; overflow:hidden; page-break-after:always; break-after:page; animation:none !important; opacity:1 !important; visibility:visible !important; transform:none !important; }
+      .slide:last-of-type { page-break-after:auto; }
+      .frame { display:flex; height:100%; flex-direction:column; justify-content:center; }
+      h2 { font-size:36pt; margin:6pt 0 12pt; }
+      #slide-2 .flow { gap:6px; margin-top:8pt; }
+      #slide-2 .flow div { min-height:84px; padding:11px; }
+      #slide-2 .flow b { margin-bottom:7px; }
+      #slide-2 .grid-3 { gap:8px; margin-top:10px; }
+      #slide-2 .card { padding:12px; }
+      #slide-2 .card h3 { margin:7px 0 5px; font-size:.9rem; }
+      #slide-2 .card p { font-size:.72rem; line-height:1.4; }
+      .lead,.card p,.guardrails,.next div { color:#44566b; }
+      .card,.flow div,.formula,.control-case,.rate,.guardrails,.result,.next div { background:white; color:#102033; box-shadow:none; border-color:#cbd5e1; }
+      .formula code { color:#0f766e; }
+      .math-row strong { color:#102033; }
+    }
+  </style>
+</head>
+<body>
+  <main class="deck" aria-live="polite">
+    <div class="progress-track" aria-hidden="true"><div id="progress-bar"></div></div>
+    <div class="hint">Use ← → arrow keys</div>
+
+    <section class="slide active" id="slide-1" aria-label="Slide 1 of 5">
+      <div class="frame">
+        <div class="eyebrow">Structured Hiring & ATS Architecture Lab</div>
+        <h1>Evidence over instinct.</h1>
+        <p class="lead">A privacy-first enterprise hiring system for a fictional precision manufacturer—built to keep automated screening and structured evidence reviewable across 4,000 applications.</p>
+        <div class="chips"><span class="chip">100% synthetic</span><span class="chip">5 requisitions</span><span class="chip">4,000 applicants</span><span class="chip">120 hires</span><span class="chip">14 UAT scenarios</span></div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-2" aria-label="Slide 2 of 5">
+      <div class="frame">
+        <div class="eyebrow">Architecture</div>
+        <h2>Six stages. One controlled evidence trail.</h2>
+        <div class="flow">
+          <div><b>01</b><span>Authorize the requisition</span></div>
+          <div><b>02</b><span>Blind automated knockout</span></div>
+          <div><b>03</b><span>Standard phone screen</span></div>
+          <div><b>04</b><span>Work sample + BARS</span></div>
+          <div><b>05</b><span>Calibrate + offer</span></div>
+          <div><b>06</b><span>Transfer + purge</span></div>
+        </div>
+        <div class="grid-3">
+          <article class="card"><div class="num">CONTROL 01</div><h3>Safe batch automation</h3><p>Versioned job rules, idempotent transitions, human review, appeal, and kill switch.</p></article>
+          <article class="card"><div class="num">CONTROL 02</div><h3>Locked before discussion</h3><p>500 finalists are scored independently before panel evidence becomes visible.</p></article>
+          <article class="card"><div class="num">CONTROL 03</div><h3>Timed accountability</h3><p>2,000 events follow the 24-hour reminder, 48-hour breach, and 72-hour hold.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-3" aria-label="Slide 3 of 5">
+      <div class="frame">
+        <div class="eyebrow">Selection model</div>
+        <h2>A stronger story cannot outrank stronger evidence.</h2>
+        <div class="two-col">
+          <div class="formula"><code>Composite =<br>0.40 × Work Sample<br>+ 0.40 × Structured BARS<br>+ 0.20 × Job Knowledge</code></div>
+          <div class="control-case"><div class="eyebrow">CAND-2026-0013</div><h3>Halo-effect control case</h3><div class="math-row"><span>Subjective impression</span><strong>4.60</strong></div><div class="math-row"><span>Governed composite</span><strong>3.92</strong></div><div class="math-row"><span>Reviewable gap</span><strong>+0.68</strong></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-4" aria-label="Slide 4 of 5">
+      <div class="frame">
+        <div class="eyebrow">Fairness + privacy</div>
+        <h2>Monitor outcomes without exposing people.</h2>
+        <div class="governance">
+          <div class="rate-box">
+            <div class="rate"><span>Reference progression</span><strong>624 / 2,400</strong></div>
+            <div class="rate"><span>Focal progression</span><strong>362 / 1,600</strong></div>
+            <div class="rate air"><span>Knockout-progression impact ratio</span><strong>0.87</strong></div>
+          </div>
+          <ul class="guardrails"><li>Cohorts hidden from screeners and panels</li><li>Counts shown beside rates</li><li>Later-stage flags remain visible</li><li>Four-fifths is a rule of thumb—not proof</li><li>Rejected résumés queued for 180-day purge</li></ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-5" aria-label="Slide 5 of 5">
+      <div class="frame">
+        <div class="eyebrow">Reconciled operating view</div>
+        <h2>A portfolio artifact built like a controlled product.</h2>
+        <div class="results"><div class="result"><strong>4,000</strong><span>Applicants</span></div><div class="result"><strong>3.0%</strong><span>120 hires</span></div><div class="result"><strong>28.5d</strong><span>Time to fill</span></div><div class="result"><strong>91.8%</strong><span>SLA adherence</span></div><div class="result"><strong>0.87</strong><span>Impact ratio</span></div></div>
+        <div class="next"><div><strong>Explore</strong><br>Open the interactive candidate evidence dashboard.</div><div><strong>Inspect</strong><br>Trace every KPI to the three source CSVs and data dictionary.</div><div><strong>Challenge</strong><br>Use the limitations, UAT, and governance matrices to test the design.</div></div>
+      </div>
+    </section>
+
+    <div class="controls">
+      <button id="previous-slide" type="button" aria-label="Previous slide">←</button>
+      <span id="slide-counter">01 / 05</span>
+      <button id="next-slide" type="button" aria-label="Next slide">→</button>
+    </div>
+  </main>
+  <script>
+    (function () {
+      "use strict";
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const previous = document.getElementById("previous-slide");
+      const next = document.getElementById("next-slide");
+      const counter = document.getElementById("slide-counter");
+      const progress = document.getElementById("progress-bar");
+      let current = 0;
+      function show(index) {
+        current = Math.max(0, Math.min(slides.length - 1, index));
+        slides.forEach(function (slide, position) {
+          slide.classList.toggle("active", position === current);
+          slide.setAttribute("aria-hidden", position === current ? "false" : "true");
+        });
+        counter.textContent = String(current + 1).padStart(2, "0") + " / " + String(slides.length).padStart(2, "0");
+        progress.style.width = ((current + 1) / slides.length * 100) + "%";
+        previous.disabled = current === 0;
+        next.disabled = current === slides.length - 1;
+        document.title = "Slide " + (current + 1) + " · Structured Hiring & ATS Lab";
+      }
+      previous.addEventListener("click", function () { show(current - 1); });
+      next.addEventListener("click", function () { show(current + 1); });
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "ArrowLeft") show(current - 1);
+        if (event.key === "ArrowRight" || event.key === " ") { event.preventDefault(); show(current + 1); }
+        if (event.key === "Home") show(0);
+        if (event.key === "End") show(slides.length - 1);
+      });
+      show(0);
+    }());
+  </script>
+</body>
+</html>

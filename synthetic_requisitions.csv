@@ -1,0 +1,6 @@
+Requisition_ID,Job_Title,Department,Grade,Hiring_Manager_ID,Target_Headcount,Open_Date,Close_Date,Days_to_Fill,Status,Sourcing_Channel_Primary,Total_Applicants,Shortlisted,Interviewed,Offered,Hired
+REQ-2026-ENG-G4,Senior Precision Engineer,Engineering,APD-G4,APD-MGR-01,10,2026-01-05,2026-02-08,34.0,Filled,LinkedIn Recruiter,800,197,100,10,10
+REQ-2026-ENG-G1,CNC Precision Machinist Trainee,Engineering,APD-G1,APD-MGR-04,60,2026-01-10,2026-02-01,22.0,Filled,Skills Academy,1600,395,200,60,60
+REQ-2026-QUA-G3,Quality Assurance Specialist,Quality,APD-G3,APD-MGR-03,15,2026-02-01,2026-03-03,30.0,Filled,Employee Referral,600,148,75,15,15
+REQ-2026-PNC-G2,People Operations Specialist,People & Culture,APD-G2,APD-MGR-02,10,2026-01-15,2026-02-10,26.0,Filled,Direct Career Portal,400,98,50,10,10
+REQ-2026-SCM-G2,Supply Chain & Logistics Associate,Supply Chain,APD-G2,APD-MGR-05,25,2026-02-05,2026-03-07,30.5,Filled,Regional Hiring Drive,600,148,75,25,25
