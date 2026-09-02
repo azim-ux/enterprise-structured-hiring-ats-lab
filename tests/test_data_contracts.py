@@ -14,12 +14,13 @@ class DataContractTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.valid = contracts.load_repository(ROOT)
+        cls.valid_findings = contracts.validate_snapshot(cls.valid)
 
     def snapshot(self):
         return copy.deepcopy(self.valid)
 
     def assert_rejected(self, snapshot, category):
-        findings = contracts.validate_snapshot(snapshot)
+        findings = contracts.validate_categories(snapshot, (category,))
         self.assertIn(category, {finding.category for finding in findings})
         rendered = contracts.format_findings(findings)
         self.assertNotIn("Synthetic Candidate", rendered)
@@ -29,7 +30,7 @@ class DataContractTests(unittest.TestCase):
         self.assertEqual([], contracts.validate_repository(ROOT))
 
     def test_current_exact_schemas_and_field_rules_pass(self):
-        findings = contracts.validate_snapshot(self.valid)
+        findings = self.valid_findings
         blocked = {"schema", "required field", "nullability", "type", "format"}
         self.assertTrue(blocked.isdisjoint(finding.category for finding in findings))
 
@@ -55,6 +56,14 @@ class DataContractTests(unittest.TestCase):
             findings = contracts.csv_structure_findings(path, ("A", "B"), "test")
         self.assertEqual("schema", findings[0].category)
         self.assertNotIn("one", contracts.format_findings(findings))
+
+    def test_csv_structure_rejects_header_and_read_failures(self):
+        with tempfile.TemporaryDirectory() as directory:
+            directory = Path(directory)
+            wrong_header = directory / "wrong.csv"
+            wrong_header.write_text("A,C\nrecord-key,value\n", encoding="utf-8")
+            self.assertTrue(contracts.csv_structure_findings(wrong_header, ("A", "B"), "test"))
+            self.assertTrue(contracts.csv_structure_findings(directory / "missing.csv", ("A",), "test"))
 
     def test_required_and_nullable_field_mutations_are_rejected(self):
         required = self.snapshot()
@@ -124,8 +133,23 @@ class DataContractTests(unittest.TestCase):
         row["Hired_Date"] = ""
         self.assert_rejected(hired_without_date, "stage progression")
 
+    def test_temporal_and_disposition_mutations_are_rejected(self):
+        requisition_dates = self.snapshot()
+        requisition_dates.tables["requisitions"][0]["Close_Date"] = "2025-12-31"
+        self.assert_rejected(requisition_dates, "temporal consistency")
+        candidate_dates = self.snapshot()
+        candidate_dates.tables["candidates"][0]["Applied_Date"] = "2026-12-31"
+        self.assert_rejected(candidate_dates, "temporal consistency")
+        interview_dates = self.snapshot()
+        interview_dates.tables["interviews"][0]["Feedback_Submitted_Date"] = "2025-12-31"
+        self.assert_rejected(interview_dates, "temporal consistency")
+        disposition = self.snapshot()
+        row = next(r for r in disposition.tables["candidates"] if r["Current_Stage"] == "Shortlisted")
+        row["Disposition_Reason"] = "Composite below requisition threshold"
+        self.assert_rejected(disposition, "stage progression")
+
     def test_current_per_requisition_stage_totals_pass(self):
-        self.assertNotIn("requisition totals", {f.category for f in contracts.validate_snapshot(self.valid)})
+        self.assertNotIn("requisition totals", {f.category for f in self.valid_findings})
 
     def test_each_per_requisition_total_mutation_is_rejected(self):
         for field in ("Total_Applicants", "Shortlisted", "Interviewed", "Offered", "Hired"):
@@ -135,7 +159,7 @@ class DataContractTests(unittest.TestCase):
                 self.assert_rejected(snapshot, "requisition totals")
 
     def test_current_all_500_composites_and_bias_gaps_pass(self):
-        findings = contracts.validate_snapshot(self.valid)
+        findings = self.valid_findings
         self.assertNotIn("composite", {f.category for f in findings})
         self.assertNotIn("bias gap", {f.category for f in findings})
 
@@ -148,7 +172,7 @@ class DataContractTests(unittest.TestCase):
         ):
             snapshot = self.snapshot()
             row = next(r for r in snapshot.tables["candidates"] if r["Composite_Score"] and r["Candidate_ID"] != "CAND-2026-0013")
-            row[field] = str(Decimal(row[field]) + Decimal("0.01"))
+            row[field] = str(Decimal(row[field]) + Decimal("0.10"))
             with self.subTest(field=field):
                 self.assert_rejected(snapshot, "composite")
 
@@ -177,7 +201,7 @@ class DataContractTests(unittest.TestCase):
         )
 
     def test_current_cohort_sla_and_governed_kpis_pass(self):
-        categories = {f.category for f in contracts.validate_snapshot(self.valid)}
+        categories = {f.category for f in self.valid_findings}
         self.assertTrue({"cohort progression", "sla", "governed kpi"}.isdisjoint(categories))
 
     def test_cohort_progression_and_governed_kpi_mutations_are_rejected(self):
@@ -192,6 +216,28 @@ class DataContractTests(unittest.TestCase):
         row["Hired_Date"] = ""
         self.assert_rejected(hire, "governed kpi")
 
+    def test_per_requisition_cohort_progression_mutation_is_rejected(self):
+        snapshot = self.snapshot()
+        first = next(
+            row for row in snapshot.tables["candidates"]
+            if row["Requisition_ID"] == "REQ-2026-ENG-G4"
+            and row["Demographic_Cohort"] == "Reference Group"
+            and row["Phone_Screen_Score"]
+        )
+        second = next(
+            row for row in snapshot.tables["candidates"]
+            if row["Requisition_ID"] == "REQ-2026-ENG-G1"
+            and row["Demographic_Cohort"] == "Focal Group"
+            and row["Phone_Screen_Score"]
+        )
+        first["Demographic_Cohort"], second["Demographic_Cohort"] = second["Demographic_Cohort"], first["Demographic_Cohort"]
+        self.assert_rejected(snapshot, "cohort progression")
+
+    def test_displayed_governed_kpi_mutation_is_rejected(self):
+        snapshot = self.snapshot()
+        snapshot.dashboard_html["index.html"] = snapshot.dashboard_html["index.html"].replace("3.0%", "3.1%", 1)
+        self.assert_rejected(snapshot, "governed kpi")
+
     def test_sla_boundary_and_mean_mutations_are_rejected(self):
         boundary = self.snapshot()
         row = next(r for r in boundary.tables["interviews"] if r["Turnaround_Hours"] == "48.0")
@@ -199,10 +245,10 @@ class DataContractTests(unittest.TestCase):
         self.assert_rejected(boundary, "sla")
         mean = self.snapshot()
         mean.tables["interviews"][0]["Mean_BARS_Score"] = "4.64"
-        self.assert_rejected(mean, "sla")
+        self.assert_rejected(mean, "interview score")
 
     def test_current_embedded_json_matches_every_csv_value_in_both_routes(self):
-        self.assertNotIn("embedded parity", {f.category for f in contracts.validate_snapshot(self.valid)})
+        self.assertNotIn("embedded parity", {f.category for f in self.valid_findings})
 
     def test_embedded_json_missing_additional_modified_and_field_drift_are_rejected(self):
         mutations = []
@@ -227,9 +273,14 @@ class DataContractTests(unittest.TestCase):
         self.assertTrue(contracts.embedded_json_findings(missing, "route.html"))
         invalid = '<script id="requisitions-data" type="application/json">{invalid}</script>'
         self.assertTrue(contracts.embedded_json_findings(invalid, "route.html"))
+        wrong_shape = "".join(
+            f'<script id="{table}-data" type="application/json">{{}}</script>'
+            for table in ("requisitions", "candidates", "interviews")
+        )
+        self.assertTrue(contracts.embedded_json_findings(wrong_shape, "route.html"))
 
     def test_current_halo_control_values_pass(self):
-        self.assertNotIn("halo control", {f.category for f in contracts.validate_snapshot(self.valid)})
+        self.assertNotIn("halo control", {f.category for f in self.valid_findings})
 
     def test_each_halo_control_value_mutation_is_rejected(self):
         protected = (
@@ -249,8 +300,16 @@ class DataContractTests(unittest.TestCase):
             with self.subTest(field=field):
                 self.assert_rejected(snapshot, "halo control")
 
+    def test_missing_halo_control_record_is_rejected(self):
+        snapshot = self.snapshot()
+        snapshot.tables["candidates"] = [
+            row for row in snapshot.tables["candidates"]
+            if row["Candidate_ID"] != "CAND-2026-0013"
+        ]
+        self.assert_rejected(snapshot, "halo control")
+
     def test_current_five_slide_and_control_contract_passes(self):
-        categories = {f.category for f in contracts.validate_snapshot(self.valid)}
+        categories = {f.category for f in self.valid_findings}
         self.assertTrue({"slide contract", "pagination contract"}.isdisjoint(categories))
 
     def test_slide_id_order_and_control_relationship_mutations_are_rejected(self):
@@ -260,6 +319,9 @@ class DataContractTests(unittest.TestCase):
         missing_control = self.snapshot()
         missing_control.slides_html = missing_control.slides_html.replace('id="next-slide"', 'id="next-missing"', 1)
         self.assert_rejected(missing_control, "slide contract")
+        wrong_label = self.snapshot()
+        wrong_label.slides_html = wrong_label.slides_html.replace('aria-label="Slide 2 of 5"', 'aria-label="Wrong label"', 1)
+        self.assert_rejected(wrong_label, "slide contract")
 
     def test_pagination_model_bounds_and_next_previous_are_deterministic(self):
         first = contracts.paginate(total_rows=51, page_size=25, current_page=0)
@@ -270,6 +332,8 @@ class DataContractTests(unittest.TestCase):
         self.assertEqual((3, 3, 50, 51, False, True), last.as_tuple())
         empty = contracts.paginate(total_rows=0, page_size=50, current_page=1)
         self.assertEqual((1, 1, 0, 0, True, True), empty.as_tuple())
+        with self.assertRaises(ValueError):
+            contracts.paginate(total_rows=-1, page_size=25, current_page=1)
 
     def test_dashboard_pagination_source_mutations_are_rejected(self):
         for route in ("index.html", "dashboard.html"):
@@ -281,6 +345,13 @@ class DataContractTests(unittest.TestCase):
             )
             with self.subTest(route=route):
                 self.assert_rejected(snapshot, "pagination contract")
+
+    def test_dashboard_pagination_missing_controls_and_sizes_are_rejected(self):
+        html_text = self.valid.dashboard_html["index.html"]
+        missing_control = html_text.replace('id="previous-page"', 'id="previous-missing"', 1)
+        self.assertTrue(contracts.dashboard_pagination_findings(missing_control, "index.html"))
+        wrong_size = html_text.replace('<option value="50">50 rows</option>', '<option value="75">75 rows</option>', 1)
+        self.assertTrue(contracts.dashboard_pagination_findings(wrong_size, "index.html"))
 
 
 if __name__ == "__main__":

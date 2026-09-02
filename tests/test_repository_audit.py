@@ -4,8 +4,9 @@ import os
 import subprocess
 import tempfile
 import unittest
-from contextlib import redirect_stderr
+from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
+from unittest import mock
 
 from scripts import repository_audit as audit
 
@@ -323,6 +324,17 @@ class RepositoryIntegrationTests(unittest.TestCase):
     def test_current_data_and_kpis_reconcile(self):
         self.assertEqual([], audit.data_kpi_findings(ROOT))
 
+    def test_data_contract_failures_are_mapped_without_values(self):
+        contract_finding = audit.data_contracts.Finding("schema", "synthetic-key", "field")
+        with mock.patch.object(
+            audit.data_contracts,
+            "validate_repository",
+            return_value=[contract_finding],
+        ):
+            findings = audit.data_kpi_findings(ROOT)
+        self.assertEqual("data schema", findings[0].category)
+        self.assertEqual("synthetic-key:field", findings[0].path)
+
     def test_current_pdfs_pass_text_and_metadata_checks(self):
         self.assertEqual([], audit.pdf_findings(ROOT))
 
@@ -346,6 +358,20 @@ class CommandLineTests(unittest.TestCase):
             self.assertEqual(1, result)
             self.assertIn("GitHub credential", stderr.getvalue())
             self.assertNotIn(credential, stderr.getvalue())
+
+    def test_cli_success_reports_tracked_count(self):
+        stdout = io.StringIO()
+        with mock.patch.object(audit, "run_checks", return_value=[]), mock.patch.object(
+            audit, "tracked_files", return_value=[Path("README.md")]
+        ), redirect_stdout(stdout):
+            result = audit.main(["--check", "privacy", "--root", str(ROOT)])
+        self.assertEqual(0, result)
+        self.assertIn("1 tracked files", stdout.getvalue())
+
+    def test_malformed_history_record_fails_closed(self):
+        with mock.patch.object(audit, "_git", return_value=b"malformed"):
+            findings = audit.history_identity_findings(ROOT)
+        self.assertEqual("commit identity", findings[0].category)
 
 
 class WorkflowContractTests(unittest.TestCase):
