@@ -75,6 +75,9 @@ def platform_provenance_findings(records, repository, api):
     for record in records:
         if not audit.is_github_platform_identity(record.committer):
             continue
+        if not COMMIT_PATTERN.fullmatch(record.commit):
+            findings.append(_finding("platform provenance response", record))
+            continue
         if len(record.parents) != 2:
             findings.append(_finding("platform provenance parents", record))
             continue

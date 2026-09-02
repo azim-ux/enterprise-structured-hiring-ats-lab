@@ -157,6 +157,20 @@ class PlatformProvenanceTests(unittest.TestCase):
         )
         self.assertEqual([], api.paths)
 
+    def test_malformed_local_commit_identifier_fails_before_remote_lookup(self):
+        record = audit.CommitIdentity(
+            commit="not-a-commit",
+            parents=("a", "b"),
+            author=user_noreply("author"),
+            committer=platform_identity(),
+        )
+        api = FakeApi()
+        findings = provenance.platform_provenance_findings([record], REPOSITORY, api)
+        self.assertEqual(
+            ["platform provenance response"], [item.category for item in findings]
+        )
+        self.assertEqual([], api.paths)
+
     def test_unmerged_unassociated_or_mismatched_pr_fails(self):
         cases = (
             [],

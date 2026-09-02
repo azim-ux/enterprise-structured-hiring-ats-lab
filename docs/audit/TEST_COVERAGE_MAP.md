@@ -2,7 +2,7 @@
 
 ## Executed automated suite
 
-The Stage 1A.1 branch has 54 standard-library `unittest` cases. The suite covers the original repository integrity gates plus the identity-policy hotfix. The final fresh-clone result must remain 54 passed, zero failures, and zero skips.
+The Stage 1A.1 branch has 55 standard-library `unittest` cases. The suite covers the original repository integrity gates plus the identity-policy hotfix. The final fresh-clone result must remain 55 passed, zero failures, and zero skips.
 
 | Area | Positive coverage | Negative and failure coverage |
 |---|---|---|
@@ -26,7 +26,7 @@ This is line execution evidence, not proof that every semantic state or external
 
 ## Test-first evidence
 
-Before policy implementation, the expanded 40-test run produced 2 expected failures and 9 expected errors. The failures represented the existing false positive and missing workflow contract; the errors represented the intentionally absent identity-record and provenance interfaces. After implementation and edge-case hardening, 54 tests pass.
+Before policy implementation, the expanded 40-test run produced 2 expected failures and 9 expected errors. The failures represented the existing false positive and missing workflow contract; the errors represented the intentionally absent identity-record and provenance interfaces. After implementation and edge-case hardening, 55 tests pass.
 
 ## Remaining Stage 1 gaps
 

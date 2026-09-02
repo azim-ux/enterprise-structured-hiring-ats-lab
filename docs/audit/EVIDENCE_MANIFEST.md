@@ -31,7 +31,7 @@ The post-merge quality gate for PR #15 exposed a policy false positive: the huma
 
 Stage 1A.1 separates deterministic privacy classification from hosted provenance verification. The offline audit permits the exact platform service identity only as committer on a two-parent merge and keeps the existing immutable legacy exception. The push-to-main provenance job independently requires the exact `web-flow` actor, a verified signature with valid reason, two parents, and association with a merged pull request.
 
-Test-first evidence was captured before the implementation: 40 tests ran with 2 expected failures and 9 expected errors because the new contracts and module did not yet exist. The completed suite runs 54 tests, including positive, negative, malformed-evidence, unavailable-API, sanitized PR #15-shape, and redaction cases. Standard-library trace observation reports 92% line coverage for the provenance module and 91% for the repository auditor.
+Test-first evidence was captured before the implementation: 40 tests ran with 2 expected failures and 9 expected errors because the new contracts and module did not yet exist. The completed suite runs 55 tests, including positive, negative, malformed-evidence, unavailable-API, sanitized PR #15-shape, and redaction cases. Standard-library trace observation reports at least 92% line coverage for the provenance module and 91% for the repository auditor.
 
 An authenticated, field-filtered hosted verification confirmed two reachable platform-generated merge commits. The command emitted only the verified count; no address or API response body was logged. See the [identity privacy and provenance method](IDENTITY_PRIVACY_AND_PROVENANCE_METHOD.md).
 
@@ -74,7 +74,7 @@ An authenticated, field-filtered hosted verification confirmed two reachable pla
 | E21 | Chart.js version and integrity | Version marker plus SHA-256 | 4.4.7 and governed hash |
 | E22 | Dependency advisory query | GitHub Advisory Database query | No matching advisory at the observation time |
 | E23 | Stage 1A.1 test-first baseline | Unittest before implementation | 40 ran; 2 expected failures and 9 expected errors |
-| E24 | Final identity/provenance contracts | Complete unittest suite | 54 passed; zero failures and zero skips |
+| E24 | Final identity/provenance contracts | Complete unittest suite | 55 passed; zero failures and zero skips |
 | E25 | Offline repository audit | Executable audit | 45 tracked files passed after documentation commit |
 | E26 | Hosted platform provenance | GitHub API field allowlist | Two reachable merges verified; category/count output only |
 | E27 | Changed audit-module coverage | Standard-library trace | Provenance 92%; repository audit 91% |
