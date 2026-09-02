@@ -2,7 +2,7 @@
 
 ## Executed automated suite
 
-The Stage 1C branch has 107 standard-library `unittest` cases: the 92-test Stage 1B baseline plus five contextual-claims tests, eight deterministic-regeneration tests, and two visual-evidence/PDF-metadata policy tests. The final fresh-clone result must remain 107 passed, zero failures, and zero skips.
+The Stage 1C branch has 113 standard-library `unittest` cases: the 92-test Stage 1B baseline plus five contextual-claims tests, eight deterministic-regeneration tests, two visual-evidence/PDF-metadata policy tests, and six desktop print-design tests. The final fresh-clone result must remain 113 passed, zero failures, and zero skips.
 
 | Area | Positive coverage | Negative and failure coverage |
 |---|---|---|
@@ -10,6 +10,7 @@ The Stage 1C branch has 107 standard-library `unittest` cases: the 92-test Stage
 | Links and scripts | Tracked relative Markdown/HTML targets and self-hosted scripts | Missing targets, repository escape, and external executable scripts |
 | Claims | Current HTML and extracted PDF text; clearly labelled proposals, absent controls, and review requirements | Affirmative production, runtime access, erasure, compliance, fairness, validity, and accessibility mutations; qualified first mention followed by prohibited later claim |
 | PDFs and artifacts | Text, metadata, page geometry, tagging, inactive content, no forms, governed source/output/contact-sheet hashes, pinned Chart.js marker | Wrong metadata, active PDF content, forms, missing/mutated artifacts, dependency-marker drift, incomplete volatile-date normalization |
+| Desktop print design | Print type targets, WCAG-AA color tokens, five editorial structures, five nonempty pages, required claims/KPIs, 12-point visible-text floor, text bounds, and byte-identical mobile artifact | Missing/invalid typography or color tokens, low contrast, retired pill/card structures, empty/missing text, undersized or out-of-bounds text, mobile hash drift |
 | CSV structure | Exact ordered schemas, required/nullable fields, types, dates, score ranges and precision | Missing, duplicate, unexpected columns; malformed rows; empty required values; invalid type/date/range/precision |
 | Keys and progression | Unique/sequential IDs, foreign keys, candidate/requisition pairs, enums, temporal order, downstream stage fields, offers, dispositions and four-event finalist sets | Duplicate/gapped IDs, orphan/mismatched references, invalid enum, impossible transition, inconsistent date/offer/disposition/event state |
 | Arithmetic and totals | All 500 40/40/20 composites, 2,000 BARS means, bias gaps, decimal half-up rounding, deterministic ties, requisition funnels, cohort progression, 120 hires, 28.5 days, 1,836 SLA rows and AIR 0.87 | Independent component/result/gap mutations, missing/corrupt scores, requisition and cohort drift, 48-hour boundary inversion and displayed-KPI drift |
@@ -29,7 +30,7 @@ The standard-library `trace` run on 2026-09-02 reports:
 
 This is line execution evidence, not proof that every semantic state or external failure mode has been modeled.
 
-The full 107-test standard-library trace reports:
+The full 113-test standard-library trace reports:
 
 - `scripts/claims_policy.py`: 100.0% (40 of 40 executable lines).
 - `scripts/regenerate_pdfs.py`: 92.1% (58 of 63).

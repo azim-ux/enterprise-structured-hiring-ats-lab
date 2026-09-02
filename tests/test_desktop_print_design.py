@@ -73,7 +73,7 @@ class DesktopPrintDesignTests(unittest.TestCase):
         properties = custom_properties(self.source)
         paper = properties.get("--print-paper")
         self.assertRegex(paper or "", r"^#[0-9a-fA-F]{6}$")
-        for token in ("--print-ink", "--print-body", "--print-muted", "--print-teal", "--print-amber"):
+        for token in ("--print-ink-color", "--print-body-color", "--print-muted-color", "--print-teal-color", "--print-amber-color"):
             with self.subTest(token=token):
                 color = properties.get(token)
                 self.assertRegex(color or "", r"^#[0-9a-fA-F]{6}$")
@@ -106,6 +106,7 @@ class DesktopPrintDesignTests(unittest.TestCase):
                 text=True,
             )
             self.assertTrue(completed.stdout.strip(), f"desktop PDF page {page} is empty")
+            self.assertNotIn("\ufffd", completed.stdout, f"desktop PDF page {page} contains a replacement glyph")
             for snippet in snippets:
                 with self.subTest(page=page, snippet=snippet):
                     self.assertIn(snippet, completed.stdout)
@@ -113,11 +114,12 @@ class DesktopPrintDesignTests(unittest.TestCase):
     def test_rendered_text_meets_twelve_point_floor_and_page_bounds(self):
         root = pdf_xml()
         self.assertEqual(5, len(root.findall("page")))
+        fonts = {}
         for page in root.findall("page"):
             width = float(page.attrib["width"])
             height = float(page.attrib["height"])
             scale = width / 960.0
-            fonts = {item.attrib["id"]: float(item.attrib["size"]) / scale for item in page.findall("fontspec")}
+            fonts.update({item.attrib["id"]: float(item.attrib["size"]) / scale for item in page.findall("fontspec")})
             visible_sizes = []
             for item in page.findall("text"):
                 text_value = "".join(item.itertext()).strip()

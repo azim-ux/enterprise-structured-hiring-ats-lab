@@ -49,15 +49,15 @@ CLAIM_SOURCES = ("slides.html", "mobile-case-study.html")
 EXPECTED_ARTIFACT_HASHES = {
     "index.html": "51765b742caae8ea61c7bb465e01762e9fe987e6ee308d61e11f79ccad9bbbad",
     "dashboard.html": "51765b742caae8ea61c7bb465e01762e9fe987e6ee308d61e11f79ccad9bbbad",
-    "slides.html": "6a94bf0651578231195856a41d0f7ba3f038a11b0ac9bcdcf669bd830e93ac79",
+    "slides.html": "c7cad18ca4dc9f49e052902cc49fb1baccb8098f90c7fc32ede8444e3a91a978",
     "mobile-case-study.html": "b58d8cd5ab743bacbf93d166e163e8b2d6a66764ad5bbf2807d39919c9c64c31",
     "mobile-case-study.css": "96ef26afcc038f329efb46b0395b7db299c83712cc9ff7e054f6d7a768316872",
     "synthetic_requisitions.csv": "a5857a0bd2fb824288406611f0afd929f428c40ebe143c1f982e25ed79d20bab",
     "synthetic_candidates.csv": "2e9cb4153172b7cf83349b8f49498a8598c621c81c5cfe14441a3fd6fbb57359",
     "synthetic_interviews.csv": "07857ea73dbde578b5ead86b16536a967c9193a113b3e0387ee454b0ebb83a36",
-    "Structured_Hiring_and_ATS_Architecture_Case_Study.pdf": "0541bee04409a6ca2fa416644fa6df38496eaf6d07867371a3b199066e021626",
+    "Structured_Hiring_and_ATS_Architecture_Case_Study.pdf": "6a90cc75ef1d4a4ba334a76b50bb12250c2201384eaf6fc97d90bc93c9a47586",
     "Structured_Hiring_and_ATS_Architecture_Mobile_Case_Study.pdf": "d9c875aba042fc56da6feaf8aa33c5938d22505b28632718cf73851c080c4824",
-    "docs/audit/visual/desktop-final-pages.png": "9f912e5006e87820378777a016d47aaa74035e0c309f5282c96c8fa9ea41be51",
+    "docs/audit/visual/desktop-final-pages.png": "0071bb1876852f3617d01b8dbf0236b050deb296ad10cfd63fca497814272d79",
     "docs/audit/visual/mobile-final-pages.png": "4ac1764391146fe31ab4e0b9aa3bec376a72c1b4c40cd5271f94733725934109",
     "vendor/chart.umd.min.js": "206b6e8bb00fc7bba2c7ee80ca41db3e9e05ba7be0aa35abeba9cfd5357f5d0e",
 }
