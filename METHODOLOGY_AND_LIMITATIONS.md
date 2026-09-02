@@ -41,6 +41,8 @@ Composite = 0.40 × Work Sample
 Bias Gap = Subjective Impression − Composite
 ```
 
+Arithmetic is performed with decimal values and round-half-up to two places; binary floating-point is not used for reconciliation. Within each requisition, deterministic score ordering is descending by exact composite and uses ascending `Candidate_ID` only to resolve an exact tie.
+
 Exactly 120 scored candidates are marked Hired according to preallocated requisition and cohort quotas: 10, 60, 15, 10, and 25. Candidate CAND-2026-0013 is explicitly set to work sample 4.00, structured interview 3.80, knowledge 4.00, composite 3.92, subjective impression 4.60, and gap +0.68; the candidate is not hired.
 
 ### 5. Generate 2,000 evaluation events
@@ -51,7 +53,7 @@ A deterministic permutation rule distributes 164 late records through the sequen
 
 ### 6. Reconcile and publish
 
-The current 55-test suite and executable repository audit verify required assets, governed artifact hashes, PDF text and metadata contracts, tracked-file policy, privacy and high-confidence secret patterns, relative Markdown and HTML links, self-hosted executable scripts, all 500 composite calculations, core governed KPIs, history identity privacy, workflow pins, and GitHub platform-merge provenance behavior. Full schemas and foreign keys, per-requisition stage totals, embedded JSON parity, pagination behavior, and documentation traceability remain scheduled for later Stage 1 work. At the audited baseline, both dashboard files embed every CSV value as JSON.
+The current 92-test suite and executable repository audit verify required assets, governed artifact hashes, PDF text and metadata contracts, tracked-file policy, privacy and high-confidence secret patterns, relative Markdown and HTML links, self-hosted executable scripts, exact schemas and nullability, IDs and foreign keys, enumerations and stage progression, all 500 composite calculations, per-requisition and cohort totals, SLA boundaries, governed KPIs, both dashboard JSON payloads, the halo control, five-slide structure, deterministic pagination rules, history identity privacy, workflow pins, and GitHub platform-merge provenance behavior. Both dashboard files must preserve every normalized CSV field and value; drift fails the `data` gate.
 
 ## Statistical assumptions
 

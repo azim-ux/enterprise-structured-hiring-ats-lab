@@ -83,3 +83,9 @@ CSV files are UTF-8 with a header row and comma delimiter. Dates use ISO `YYYY-M
 - Exactly 500 scored candidates each have four evaluation events.
 - Exactly 1,836 interview rows have SLA_Met Yes and 164 have No, producing 91.8%.
 - Source-identical JSON arrays in `index.html` and `dashboard.html` preserve every CSV field as a string.
+
+## Executable contract
+
+`scripts/data_contracts.py` enforces the column order above, required and nullable fields, primitive formats, score precision and ranges, allowed values, sequential candidate and interview IDs, unique entity IDs, foreign keys, stage-dependent downstream fields, temporal ordering, per-requisition totals, cohort progression, interview-event completeness, SLA classification, and governed KPI constants.
+
+Composite arithmetic uses `Decimal` and round-half-up to two places. Candidate ranking is descending by exact composite and uses `Candidate_ID` ascending only as a deterministic tie break. Both dashboard routes are parsed as HTML; their three `application/json` blocks must match the CSV rows and fields after empty/null and string normalization. Validation failures expose only the synthetic record key and field name, never a complete row.

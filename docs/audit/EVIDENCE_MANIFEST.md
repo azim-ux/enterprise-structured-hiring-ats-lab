@@ -35,6 +35,12 @@ Test-first evidence was captured before the implementation: 40 tests ran with 2 
 
 An authenticated, field-filtered hosted verification confirmed two reachable platform-generated merge commits. The command emitted only the verified count; no address or API response body was logged. See the [identity privacy and provenance method](IDENTITY_PRIVACY_AND_PROVENANCE_METHOD.md).
 
+## Stage 1B data-contract evidence
+
+Stage 1B adds [`scripts/data_contracts.py`](../../scripts/data_contracts.py) as the single executable source for synthetic-data contracts and delegates the repository auditor's existing `data` gate to it. No CSV, dashboard, slide, PDF, dependency, workflow, route, or repository setting is changed.
+
+Test-first evidence was captured in two red cycles: the focused suite first failed to import the intentionally absent validator, then three added mutations failed for temporal, per-requisition cohort, and displayed-KPI rules before those checks were implemented. The completed branch runs 92 tests with zero skips. Standard-library line tracing reports 95.4% for the new validator, 92% for the repository auditor, and 92% for the hosted-provenance module.
+
 ## Tool record
 
 | Tool | Version used for Stage 0 |
@@ -78,6 +84,11 @@ An authenticated, field-filtered hosted verification confirmed two reachable pla
 | E25 | Offline repository audit | Executable audit | 45 tracked files passed after documentation commit |
 | E26 | Hosted platform provenance | GitHub API field allowlist | Two reachable merges verified; category/count output only |
 | E27 | Changed audit-module coverage | Standard-library trace | Provenance 92%; repository audit 91% |
+| E28 | Stage 1B test-first baseline | Focused unittest before implementation | Validator import failed as expected; no source artifact changed |
+| E29 | Stage 1B second red cycle | Three focused mutation tests | Temporal, requisition-cohort, and displayed-KPI mutations failed before implementation |
+| E30 | Complete data contracts | Standard-library unittest | 92 passed; zero failures and zero skips |
+| E31 | Data-contract coverage | Module-filtered standard-library line tracing | Data contracts 95.4%; repository audit 92%; provenance 92% |
+| E32 | Source artifact immutability | Git diff and governed SHA-256 audit | CSV, dashboard, slide, PDF, dependency, workflow, and public route content unchanged |
 
 The current executable audit covers E02–E16 and E21 where the claims are deterministic repository properties. Browser observations E17–E20 remain Stage 0 baselines for the later responsive/accessibility workstream. E22 is point-in-time evidence and is not a continuous advisory service.
 
