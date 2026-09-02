@@ -79,6 +79,10 @@
       #slide-2 .card { padding:12px; }
       #slide-2 .card h3 { margin:7px 0 5px; font-size:.9rem; }
       #slide-2 .card p { font-size:.72rem; line-height:1.4; }
+      #slide-3 h2 { font-size:32pt; margin:5pt 0 9pt; }
+      #slide-3 .two-col { margin-top:12px; }
+      #slide-3 .formula,#slide-3 .control-case { min-height:245px; padding:20px; }
+      #slide-3 .math-row { padding:8px 0; }
       .lead,.card p,.guardrails,.next div { color:#44566b; }
       .card,.flow div,.formula,.control-case,.rate,.guardrails,.result,.next div { background:white; color:#102033; box-shadow:none; border-color:#cbd5e1; }
       .formula code { color:#0f766e; }
@@ -95,27 +99,27 @@
       <div class="frame">
         <div class="eyebrow">Structured Hiring & ATS Architecture Lab</div>
         <h1>Evidence over instinct.</h1>
-        <p class="lead">A privacy-first enterprise hiring system for a fictional precision manufacturer—built to keep automated screening and structured evidence reviewable across 4,000 applications.</p>
-        <div class="chips"><span class="chip">100% synthetic</span><span class="chip">5 requisitions</span><span class="chip">4,000 applicants</span><span class="chip">120 hires</span><span class="chip">14 UAT scenarios</span></div>
+        <p class="lead">A synthetic portfolio simulation and enterprise-oriented reference implementation under development. It models reviewable screening and structured evidence across 4,000 fictional applications.</p>
+        <div class="chips"><span class="chip">100% synthetic</span><span class="chip">5 requisitions</span><span class="chip">4,000 applicants</span><span class="chip">120 modeled hires</span><span class="chip">14 documented UAT scenarios</span><span class="chip">Not for real applicant data</span></div>
       </div>
     </section>
 
     <section class="slide" id="slide-2" aria-label="Slide 2 of 5">
       <div class="frame">
         <div class="eyebrow">Architecture</div>
-        <h2>Six stages. One controlled evidence trail.</h2>
+        <h2>Six design stages. One traceable evidence model.</h2>
         <div class="flow">
           <div><b>01</b><span>Authorize the requisition</span></div>
-          <div><b>02</b><span>Blind automated knockout</span></div>
+          <div><b>02</b><span>Specify job-related knockouts</span></div>
           <div><b>03</b><span>Standard phone screen</span></div>
           <div><b>04</b><span>Work sample + BARS</span></div>
           <div><b>05</b><span>Calibrate + offer</span></div>
-          <div><b>06</b><span>Transfer + purge</span></div>
+          <div><b>06</b><span>Propose transfer and erasure controls</span></div>
         </div>
         <div class="grid-3">
-          <article class="card"><div class="num">CONTROL 01</div><h3>Safe batch automation</h3><p>Versioned job rules, idempotent transitions, human review, appeal, and kill switch.</p></article>
-          <article class="card"><div class="num">CONTROL 02</div><h3>Locked before discussion</h3><p>500 finalists are scored independently before panel evidence becomes visible.</p></article>
-          <article class="card"><div class="num">CONTROL 03</div><h3>Timed accountability</h3><p>2,000 events follow the 24-hour reminder, 48-hour breach, and 72-hour hold.</p></article>
+          <article class="card"><div class="num">PROPOSED CONTROL 01</div><h3>Automation guardrails</h3><p>Documented production requirements include versioned rules, idempotent transitions, human review, appeal, and a kill switch.</p></article>
+          <article class="card"><div class="num">MODELED CONTROL 02</div><h3>Evidence locked in the model</h3><p>Synthetic finalist scores are calculated before subjective comparison; no runtime panel-access control is implemented.</p></article>
+          <article class="card"><div class="num">TESTED RULE 03</div><h3>SLA classification</h3><p>2,000 synthetic events are deterministically classified against the documented 48-hour feedback threshold.</p></article>
         </div>
       </div>
     </section>
@@ -134,24 +138,24 @@
     <section class="slide" id="slide-4" aria-label="Slide 4 of 5">
       <div class="frame">
         <div class="eyebrow">Fairness + privacy</div>
-        <h2>Monitor outcomes without exposing people.</h2>
+        <h2>Model outcomes with separated synthetic fields.</h2>
         <div class="governance">
           <div class="rate-box">
             <div class="rate"><span>Reference progression</span><strong>624 / 2,400</strong></div>
             <div class="rate"><span>Focal progression</span><strong>362 / 1,600</strong></div>
             <div class="rate air"><span>Knockout-progression impact ratio</span><strong>0.87</strong></div>
           </div>
-          <ul class="guardrails"><li>Cohorts hidden from screeners and panels</li><li>Counts shown beside rates</li><li>Later-stage flags remain visible</li><li>Four-fifths is a rule of thumb—not proof</li><li>Rejected résumés queued for 180-day purge</li></ul>
+          <ul class="guardrails"><li>Design requirement: isolate cohort fields from operational selection roles</li><li>Counts remain visible beside modeled rates</li><li>Later-stage monitoring flags are documented</li><li>Four-fifths is an indicator, not proof of compliance or absence of bias</li><li>Production requires reviewed retention and erasure controls</li></ul>
         </div>
       </div>
     </section>
 
     <section class="slide" id="slide-5" aria-label="Slide 5 of 5">
       <div class="frame">
-        <div class="eyebrow">Reconciled operating view</div>
-        <h2>A portfolio artifact built like a controlled product.</h2>
-        <div class="results"><div class="result"><strong>4,000</strong><span>Applicants</span></div><div class="result"><strong>3.0%</strong><span>120 hires</span></div><div class="result"><strong>28.5d</strong><span>Time to fill</span></div><div class="result"><strong>91.8%</strong><span>SLA adherence</span></div><div class="result"><strong>0.87</strong><span>Impact ratio</span></div></div>
-        <div class="next"><div><strong>Explore</strong><br>Open the interactive candidate evidence dashboard.</div><div><strong>Inspect</strong><br>Trace every KPI to the three source CSVs and data dictionary.</div><div><strong>Challenge</strong><br>Use the limitations, UAT, and governance matrices to test the design.</div></div>
+        <div class="eyebrow">Reconciled modeled view</div>
+        <h2>A portfolio artifact with executable data checks.</h2>
+        <div class="results"><div class="result"><strong>4,000</strong><span>Synthetic applicants</span></div><div class="result"><strong>3.0%</strong><span>120 modeled hires</span></div><div class="result"><strong>28.5d</strong><span>Modeled time to fill</span></div><div class="result"><strong>91.8%</strong><span>Modeled SLA adherence</span></div><div class="result"><strong>0.87</strong><span>Modeled impact ratio</span></div></div>
+        <div class="next"><div><strong>Explore</strong><br>Open the demonstration-only candidate evidence dashboard.</div><div><strong>Inspect</strong><br>Trace every KPI to the three source CSVs and deterministic tests.</div><div><strong>Challenge</strong><br>Not suitable for real applicant data; operational use requires independent review.</div></div>
       </div>
     </section>
 

@@ -12,8 +12,9 @@ from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
 try:
-    from scripts import data_contracts
+    from scripts import claims_policy, data_contracts
 except ModuleNotFoundError:  # Direct execution places scripts/ on sys.path.
+    import claims_policy
     import data_contracts
 
 
@@ -35,21 +36,29 @@ ALLOWED_EMAIL_DOMAINS = {
     "example.com",
     "users.noreply.github.com",
 }
+EXPECTED_VISUAL_EVIDENCE = {
+    Path("docs/audit/visual/desktop-final-pages.png"),
+    Path("docs/audit/visual/mobile-final-pages.png"),
+}
+MAX_VISUAL_EVIDENCE_BYTES = 1_000_000
 EXPECTED_PDFS = {
     "Structured_Hiring_and_ATS_Architecture_Case_Study.pdf": "960 x 540 pts",
     "Structured_Hiring_and_ATS_Architecture_Mobile_Case_Study.pdf": "420 x 720 pts",
 }
+CLAIM_SOURCES = ("slides.html", "mobile-case-study.html")
 EXPECTED_ARTIFACT_HASHES = {
     "index.html": "51765b742caae8ea61c7bb465e01762e9fe987e6ee308d61e11f79ccad9bbbad",
     "dashboard.html": "51765b742caae8ea61c7bb465e01762e9fe987e6ee308d61e11f79ccad9bbbad",
-    "slides.html": "326576edb7ec8e3175996872e55334805ff9f6b595baa87018ec8610fcd8b3d0",
-    "mobile-case-study.html": "7227193f0b35f0d891756d7ec3d773f5a30b6d5602fbd19be2cfeaf47e0da746",
-    "mobile-case-study.css": "df7636f62b9275ac70a3a583bb2383f39b4ac6a6760a2834a321739e53d59034",
+    "slides.html": "6a94bf0651578231195856a41d0f7ba3f038a11b0ac9bcdcf669bd830e93ac79",
+    "mobile-case-study.html": "b58d8cd5ab743bacbf93d166e163e8b2d6a66764ad5bbf2807d39919c9c64c31",
+    "mobile-case-study.css": "96ef26afcc038f329efb46b0395b7db299c83712cc9ff7e054f6d7a768316872",
     "synthetic_requisitions.csv": "a5857a0bd2fb824288406611f0afd929f428c40ebe143c1f982e25ed79d20bab",
     "synthetic_candidates.csv": "2e9cb4153172b7cf83349b8f49498a8598c621c81c5cfe14441a3fd6fbb57359",
     "synthetic_interviews.csv": "07857ea73dbde578b5ead86b16536a967c9193a113b3e0387ee454b0ebb83a36",
-    "Structured_Hiring_and_ATS_Architecture_Case_Study.pdf": "40d08a823387f81e35a36aac07b10c6cae3ac2940a014d8570bb31f0394b5c14",
-    "Structured_Hiring_and_ATS_Architecture_Mobile_Case_Study.pdf": "11fae9a47a056a2ccd5b6dda97535935237e042cea86e114ade78d91da08cc86",
+    "Structured_Hiring_and_ATS_Architecture_Case_Study.pdf": "0541bee04409a6ca2fa416644fa6df38496eaf6d07867371a3b199066e021626",
+    "Structured_Hiring_and_ATS_Architecture_Mobile_Case_Study.pdf": "d9c875aba042fc56da6feaf8aa33c5938d22505b28632718cf73851c080c4824",
+    "docs/audit/visual/desktop-final-pages.png": "9f912e5006e87820378777a016d47aaa74035e0c309f5282c96c8fa9ea41be51",
+    "docs/audit/visual/mobile-final-pages.png": "4ac1764391146fe31ab4e0b9aa3bec376a72c1b4c40cd5271f94733725934109",
     "vendor/chart.umd.min.js": "206b6e8bb00fc7bba2c7ee80ca41db3e9e05ba7be0aa35abeba9cfd5357f5d0e",
 }
 KNOWN_IDENTITY_EXCEPTIONS = {
@@ -134,6 +143,8 @@ def is_allowed_tracked_path(path):
         return len(path.parts) == 3 and path.suffix.lower() in {".yml", ".yaml"}
     if any(part.startswith(".") for part in path.parts):
         return path.name == ".gitignore"
+    if path.suffix.lower() == ".png":
+        return path in EXPECTED_VISUAL_EVIDENCE
     return path.suffix.lower() in ALLOWED_SUFFIXES
 
 
@@ -164,6 +175,47 @@ def scan_text(relative, text):
     return findings
 
 
+def png_visual_findings(relative, payload):
+    """Validate the two reviewed contact sheets without decoding image pixels."""
+    relative = Path(relative)
+    findings = []
+    if len(payload) > MAX_VISUAL_EVIDENCE_BYTES:
+        findings.append(Finding("PNG size", str(relative)))
+    if not payload.startswith(b"\x89PNG\r\n\x1a\n"):
+        return findings + [Finding("PNG structure", str(relative))]
+
+    offset = 8
+    dimensions = None
+    text_metadata = False
+    structurally_complete = False
+    while offset + 12 <= len(payload):
+        length = int.from_bytes(payload[offset:offset + 4], "big")
+        kind = payload[offset + 4:offset + 8]
+        end = offset + 12 + length
+        if end > len(payload):
+            break
+        data = payload[offset + 8:offset + 8 + length]
+        if kind == b"IHDR" and len(data) == 13:
+            dimensions = (
+                int.from_bytes(data[:4], "big"),
+                int.from_bytes(data[4:8], "big"),
+            )
+        if kind in {b"tEXt", b"zTXt", b"iTXt", b"eXIf"}:
+            text_metadata = True
+        if kind == b"IEND":
+            structurally_complete = end == len(payload)
+            break
+        offset = end
+
+    if not structurally_complete or dimensions is None:
+        findings.append(Finding("PNG structure", str(relative)))
+    elif not (600 <= dimensions[0] <= 2400 and 400 <= dimensions[1] <= 2400):
+        findings.append(Finding("PNG dimensions", str(relative)))
+    if text_metadata:
+        findings.append(Finding("PNG metadata", str(relative)))
+    return findings
+
+
 def _pdf_text_and_metadata(path):
     visible = subprocess.check_output(
         ["pdftotext", "-layout", str(path), "-"],
@@ -189,6 +241,10 @@ def privacy_findings(root=ROOT, paths=None):
             if path.suffix.lower() == ".pdf":
                 visible, metadata = _pdf_text_and_metadata(path)
                 text = visible + metadata
+            elif path.suffix.lower() == ".png":
+                content = path.read_bytes()
+                findings.extend(png_visual_findings(relative, content))
+                continue
             else:
                 content = path.read_bytes()
                 if b"\0" in content:
@@ -200,6 +256,26 @@ def privacy_findings(root=ROOT, paths=None):
             continue
         findings.extend(scan_text(relative, text))
     return findings
+
+
+def capability_claim_findings(root=ROOT):
+    root = Path(root)
+    findings = []
+    for relative in CLAIM_SOURCES + tuple(EXPECTED_PDFS):
+        path = root / relative
+        try:
+            if path.suffix.lower() == ".pdf":
+                text, _ = _pdf_text_and_metadata(path)
+            else:
+                text = path.read_text(encoding="utf-8")
+        except (OSError, subprocess.SubprocessError, UnicodeError):
+            findings.append(Finding("capability claims", relative, "artifact is unreadable"))
+            continue
+        findings.extend(
+            Finding("unsupported capability claim", relative, item.rule)
+            for item in claims_policy.evaluate_claims(text)
+        )
+    return _deduplicate(findings)
 
 
 def _normalize_tracked(tracked):
@@ -303,6 +379,7 @@ def pdf_metadata_findings(path, metadata, expected_size):
         "PDF tagging": metadata.get("Tagged", "").lower() == "yes",
         "PDF encryption": metadata.get("Encrypted", "").lower().startswith("no"),
         "PDF JavaScript": metadata.get("JavaScript", "").lower() == "no",
+        "PDF forms": metadata.get("Form", "").lower() == "none",
         "PDF page size": metadata.get("Page size", "").startswith(expected_size),
     }
     return [Finding(category, str(path)) for category, passed in checks.items() if not passed]
@@ -434,6 +511,7 @@ def run_checks(root, names):
     checks = {
         "paths": lambda: tracked_path_findings(tracked, root),
         "privacy": lambda: privacy_findings(root, tracked),
+        "claims": lambda: capability_claim_findings(root),
         "markdown-links": lambda: markdown_link_findings(root, tracked),
         "html-links": lambda: html_link_findings(root, tracked),
         "external-scripts": lambda: external_script_findings(root, tracked),
@@ -454,6 +532,7 @@ def run_all(root=ROOT):
         (
             "paths",
             "privacy",
+            "claims",
             "markdown-links",
             "html-links",
             "external-scripts",
@@ -480,6 +559,7 @@ def build_parser():
         choices=(
             "paths",
             "privacy",
+            "claims",
             "markdown-links",
             "html-links",
             "external-scripts",
@@ -502,6 +582,7 @@ def main(argv=None):
     names = arguments.check or (
         "paths",
         "privacy",
+        "claims",
         "markdown-links",
         "html-links",
         "external-scripts",

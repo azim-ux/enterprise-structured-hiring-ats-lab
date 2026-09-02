@@ -2,13 +2,14 @@
 
 ## Executed automated suite
 
-The Stage 1B branch has 92 standard-library `unittest` cases: the 55-test Stage 1A.1 baseline plus 34 focused data-contract tests and 3 repository-audit integration tests. The final fresh-clone result must remain 92 passed, zero failures, and zero skips.
+The Stage 1C branch has 107 standard-library `unittest` cases: the 92-test Stage 1B baseline plus five contextual-claims tests, eight deterministic-regeneration tests, and two visual-evidence/PDF-metadata policy tests. The final fresh-clone result must remain 107 passed, zero failures, and zero skips.
 
 | Area | Positive coverage | Negative and failure coverage |
 |---|---|---|
-| Tracked-file privacy | Synthetic/public content and permitted file types | Phone and identity patterns, local paths, credentials, binary payloads, hidden/private paths, symlinks, non-synthetic domains |
+| Tracked-file privacy | Synthetic/public content, permitted file types, and two exact visual-evidence paths | Phone and identity patterns, local paths, credentials, binary payloads, hidden/private paths, symlinks, non-synthetic domains, arbitrary PNGs, oversized or metadata-bearing contact sheets |
 | Links and scripts | Tracked relative Markdown/HTML targets and self-hosted scripts | Missing targets, repository escape, and external executable scripts |
-| PDFs and artifacts | Text, metadata, page geometry, tagging, inactive content, governed hashes, pinned Chart.js marker | Wrong metadata, active PDF content, missing/mutated artifacts, dependency-marker drift |
+| Claims | Current HTML and extracted PDF text; clearly labelled proposals, absent controls, and review requirements | Affirmative production, runtime access, erasure, compliance, fairness, validity, and accessibility mutations; qualified first mention followed by prohibited later claim |
+| PDFs and artifacts | Text, metadata, page geometry, tagging, inactive content, no forms, governed source/output/contact-sheet hashes, pinned Chart.js marker | Wrong metadata, active PDF content, forms, missing/mutated artifacts, dependency-marker drift, incomplete volatile-date normalization |
 | CSV structure | Exact ordered schemas, required/nullable fields, types, dates, score ranges and precision | Missing, duplicate, unexpected columns; malformed rows; empty required values; invalid type/date/range/precision |
 | Keys and progression | Unique/sequential IDs, foreign keys, candidate/requisition pairs, enums, temporal order, downstream stage fields, offers, dispositions and four-event finalist sets | Duplicate/gapped IDs, orphan/mismatched references, invalid enum, impossible transition, inconsistent date/offer/disposition/event state |
 | Arithmetic and totals | All 500 40/40/20 composites, 2,000 BARS means, bias gaps, decimal half-up rounding, deterministic ties, requisition funnels, cohort progression, 120 hires, 28.5 days, 1,836 SLA rows and AIR 0.87 | Independent component/result/gap mutations, missing/corrupt scores, requisition and cohort drift, 48-hour boundary inversion and displayed-KPI drift |
@@ -28,14 +29,28 @@ The standard-library `trace` run on 2026-09-02 reports:
 
 This is line execution evidence, not proof that every semantic state or external failure mode has been modeled.
 
+The full 107-test standard-library trace reports:
+
+- `scripts/claims_policy.py`: 100.0% (40 of 40 executable lines).
+- `scripts/regenerate_pdfs.py`: 92.1% (58 of 63).
+- `scripts/repository_audit.py`: 91.2% (404 of 443).
+- `scripts/data_contracts.py`: 95.4% (667 of 699), unchanged above the Stage 1B target.
+- `scripts/github_provenance_audit.py`: 92.9% (118 of 127).
+- All five first-party script modules combined: 93.8% (1,287 of 1,372).
+
 ## Test-first evidence
 
 Before Stage 1B implementation, the focused module failed to import because the validator intentionally did not exist. A second red cycle produced three expected failures for temporal consistency, requisition-level cohort progression, and displayed KPI drift. After implementation and error-path coverage, all 92 tests pass. The 37 Stage 1B additions comprise 11 positive or mixed current-behavior tests and 26 negative mutation/error-path tests; subtests independently mutate every composite component, requisition total, halo-control field, dashboard route, and protected relationship.
+
+Stage 1C began with source and extracted-PDF assertions that failed on the earlier unsupported wording. The implementation adds two current-artifact positive tests, qualified-language cases, affirmative mutation cases across eight claim categories, a regression proving one qualified occurrence cannot mask a later claim, deterministic metadata normalization tests, stable local source/output mapping, and positive/negative PNG governance checks.
 
 ## Remaining Stage 1 gaps
 
 - Browser-verifiable pagination, responsive viewport matrices, keyboard/focus behavior, automated accessibility checks, and performance budgets.
 - Continuous dependency advisory monitoring.
+- Formal PDF tag-tree, assistive-technology, and accessibility-conformance testing.
+- General natural-language truth verification beyond the explicit governed claims policy.
+- Cross-browser deterministic PDF output; a browser/toolchain upgrade can change byte output and requires review.
 - Real-world identity proof beyond metadata reported and signed by GitHub.
 - Availability of the hosted provenance check when GitHub's API or token permission is unavailable; the control intentionally fails closed.
 
