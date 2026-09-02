@@ -202,6 +202,26 @@ class PdfAndArtifactTests(unittest.TestCase):
 
 
 class HistoryIdentityTests(unittest.TestCase):
+    @staticmethod
+    def user_noreply(label="reviewer"):
+        return label + "@" + "users.noreply.github.com"
+
+    @staticmethod
+    def platform_identity():
+        return "noreply" + "@" + "github.com"
+
+    @staticmethod
+    def personal_identity():
+        return "reviewer" + "@" + "mail.test"
+
+    def record(self, *, author=None, committer=None, parents=("a", "b"), commit="f" * 40):
+        return audit.CommitIdentity(
+            commit=commit,
+            parents=tuple(parents),
+            author=author or self.user_noreply("author"),
+            committer=committer or self.user_noreply("committer"),
+        )
+
     def init_repo(self, root):
         subprocess.run(["git", "init", "-q"], cwd=root, check=True)
         subprocess.run(["git", "config", "user.name", "Synthetic Reviewer"], cwd=root, check=True)
@@ -219,6 +239,56 @@ class HistoryIdentityTests(unittest.TestCase):
             root = Path(temp)
             self.init_repo(root)
             self.assertEqual([], audit.history_identity_findings(root))
+
+    def test_user_noreply_author_and_committer_pass(self):
+        self.assertEqual([], audit.identity_findings([self.record()], allowed_exceptions=set()))
+
+    def test_exact_platform_committer_passes_only_for_merge_shape(self):
+        record = self.record(committer=self.platform_identity())
+        self.assertEqual([], audit.identity_findings([record], allowed_exceptions=set()))
+
+    def test_personal_author_fails_even_with_platform_committer(self):
+        record = self.record(
+            author=self.personal_identity(), committer=self.platform_identity()
+        )
+        findings = audit.identity_findings([record], allowed_exceptions=set())
+        self.assertEqual(["commit identity"], [finding.category for finding in findings])
+
+    def test_personal_committer_fails(self):
+        record = self.record(committer=self.personal_identity())
+        findings = audit.identity_findings([record], allowed_exceptions=set())
+        self.assertEqual(["commit identity"], [finding.category for finding in findings])
+
+    def test_arbitrary_github_domain_identity_fails(self):
+        arbitrary = "reviewer" + "@" + "github.com"
+        record = self.record(committer=arbitrary)
+        findings = audit.identity_findings([record], allowed_exceptions=set())
+        self.assertEqual(["commit identity"], [finding.category for finding in findings])
+
+    def test_platform_identity_as_author_fails(self):
+        record = self.record(author=self.platform_identity())
+        findings = audit.identity_findings([record], allowed_exceptions=set())
+        self.assertEqual(["commit identity"], [finding.category for finding in findings])
+
+    def test_platform_committer_on_single_parent_commit_fails(self):
+        record = self.record(committer=self.platform_identity(), parents=("a",))
+        findings = audit.identity_findings([record], allowed_exceptions=set())
+        self.assertEqual(["commit identity"], [finding.category for finding in findings])
+
+    def test_documented_legacy_exception_remains_narrow(self):
+        legacy_commit = next(iter(audit.KNOWN_IDENTITY_EXCEPTIONS))
+        excepted = self.record(
+            commit=legacy_commit,
+            author=self.personal_identity(),
+            committer=self.platform_identity(),
+        )
+        adjacent = self.record(
+            commit="e" * 40,
+            author=self.personal_identity(),
+            committer=self.platform_identity(),
+        )
+        self.assertEqual([], audit.identity_findings([excepted]))
+        self.assertEqual(1, len(audit.identity_findings([adjacent])))
 
     def test_non_noreply_history_fails_without_echoing_identity(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -291,6 +361,17 @@ class WorkflowContractTests(unittest.TestCase):
             "actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0",
             workflow,
         )
+
+    def test_platform_provenance_runs_only_for_main_push_with_read_permissions(self):
+        workflow = (ROOT / ".github/workflows/quality-gates.yml").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("contents: read", workflow)
+        self.assertIn("pull-requests: read", workflow)
+        self.assertIn("github-platform-provenance:", workflow)
+        self.assertIn("Run GitHub merge provenance audit", workflow)
+        self.assertIn("if: github.event_name == 'push'", workflow)
+        self.assertIn("python3 scripts/github_provenance_audit.py", workflow)
 
 
 if __name__ == "__main__":

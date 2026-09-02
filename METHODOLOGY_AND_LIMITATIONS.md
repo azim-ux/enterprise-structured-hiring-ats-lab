@@ -51,7 +51,7 @@ A deterministic permutation rule distributes 164 late records through the sequen
 
 ### 6. Reconcile and publish
 
-The current four-test acceptance suite verifies ten required assets, selected row counts and governed KPI values, a limited set of privacy/secret/local-path patterns in non-PDF files, and relative `href`/`src` targets in top-level HTML files. It does not yet verify sequential IDs, complete schemas or foreign keys, every composite calculation, per-requisition totals, embedded JSON parity, pagination behavior, PDFs, or documentation traceability. At the audited baseline, both dashboard files embed every CSV value as JSON.
+The current 55-test suite and executable repository audit verify required assets, governed artifact hashes, PDF text and metadata contracts, tracked-file policy, privacy and high-confidence secret patterns, relative Markdown and HTML links, self-hosted executable scripts, all 500 composite calculations, core governed KPIs, history identity privacy, workflow pins, and GitHub platform-merge provenance behavior. Full schemas and foreign keys, per-requisition stage totals, embedded JSON parity, pagination behavior, and documentation traceability remain scheduled for later Stage 1 work. At the audited baseline, both dashboard files embed every CSV value as JSON.
 
 ## Statistical assumptions
 

@@ -74,6 +74,8 @@ TEXT_PATTERNS = {
 }
 EMAIL_PATTERN = re.compile(r"\b[A-Z0-9._%+-]+@([A-Z0-9.-]+\.[A-Z]{2,})\b", re.I)
 MARKDOWN_LINK_PATTERN = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
+USER_NOREPLY_PATTERN = re.compile(r"^[^@\s]+@users\.noreply\.github\.com$", re.I)
+GITHUB_PLATFORM_IDENTITY = "noreply" + "@" + "github.com"
 
 
 @dataclass(frozen=True)
@@ -81,6 +83,14 @@ class Finding:
     category: str
     path: str
     message: str = "prohibited or inconsistent content detected"
+
+
+@dataclass(frozen=True)
+class CommitIdentity:
+    commit: str
+    parents: tuple
+    author: str
+    committer: str
 
 
 class LinkCollector(HTMLParser):
@@ -405,28 +415,59 @@ def data_kpi_findings(root=ROOT):
     return [] if result == expected else [Finding("data reconciliation", "synthetic CSV files")]
 
 
-def history_identity_findings(root=ROOT, allowed_exceptions=None):
+def is_user_noreply_identity(value):
+    return bool(USER_NOREPLY_PATTERN.fullmatch(value))
+
+
+def is_github_platform_identity(value):
+    return value == GITHUB_PLATFORM_IDENTITY
+
+
+def history_identity_records(root=ROOT):
+    output = _git(root, "log", "--format=%H%x00%P%x00%ae%x00%ce", "--all").decode(
+        errors="replace"
+    )
+    records = []
+    for line in output.splitlines():
+        parts = line.split("\0")
+        if len(parts) != 4:
+            raise ValueError("malformed history identity record")
+        commit, parents, author, committer = parts
+        records.append(
+            CommitIdentity(
+                commit=commit,
+                parents=tuple(parent for parent in parents.split() if parent),
+                author=author,
+                committer=committer,
+            )
+        )
+    return records
+
+
+def identity_findings(records, allowed_exceptions=None):
     allowed_exceptions = set(
         KNOWN_IDENTITY_EXCEPTIONS if allowed_exceptions is None else allowed_exceptions
     )
-    try:
-        output = _git(root, "log", "--format=%H%x00%ae%x00%ce", "--all").decode(
-            errors="replace"
-        )
-    except subprocess.SubprocessError:
-        return [Finding("commit identity", "git history", "history is unavailable")]
     findings = []
-    for line in output.splitlines():
-        parts = line.split("\0")
-        if len(parts) != 3:
-            findings.append(Finding("commit identity", "git history"))
+    for record in records:
+        if record.commit in allowed_exceptions:
             continue
-        commit, author, committer = parts
-        if commit in allowed_exceptions:
-            continue
-        if not all(value.lower().endswith("@users.noreply.github.com") for value in (author, committer)):
-            findings.append(Finding("commit identity", commit[:12]))
+        author_allowed = is_user_noreply_identity(record.author)
+        committer_allowed = is_user_noreply_identity(record.committer)
+        restricted_platform_merge = (
+            is_github_platform_identity(record.committer) and len(record.parents) == 2
+        )
+        if not author_allowed or not (committer_allowed or restricted_platform_merge):
+            findings.append(Finding("commit identity", record.commit[:12]))
     return findings
+
+
+def history_identity_findings(root=ROOT, allowed_exceptions=None):
+    try:
+        records = history_identity_records(root)
+    except (subprocess.SubprocessError, ValueError):
+        return [Finding("commit identity", "git history", "history is unavailable")]
+    return identity_findings(records, allowed_exceptions)
 
 
 def _deduplicate(findings):

@@ -2,45 +2,39 @@
 
 ## Executed automated suite
 
-The repository has one Python module with four `unittest` cases. A fresh-clone run passed 4/4 on 2026-09-02.
+The Stage 1A.1 branch has 55 standard-library `unittest` cases. The suite covers the original repository integrity gates plus the identity-policy hotfix. The final fresh-clone result must remain 55 passed, zero failures, and zero skips.
 
-| Test | What it actually asserts | Important omissions |
+| Area | Positive coverage | Negative and failure coverage |
 |---|---|---|
-| `test_required_assets_exist` | Ten named files exist | Exact inventory, documentation set, licenses, file integrity, PDF page count |
-| `test_reconciled_metrics` | 5/4,000/2,000 row counts; 120 hires; 28.5 days; 1,836 SLA rows; 0.87 AIR | Schemas, ID uniqueness, foreign keys, all stage counts, all 500 composite calculations, per-requisition totals, rounding policy |
-| `test_no_pii_secrets_or_local_paths` | A small regex set across readable non-PDF files | PDFs, Git history, emails, passports, Emirates IDs, broader credentials, binary/archive inspection; it also scans ignored tooling artifacts |
-| `test_relative_html_links_resolve_inside_repository` | Local `href`/`src` targets from top-level HTML exist and stay inside the repo | HTTP status, fragments, Markdown links, case-sensitive deployment behavior, download semantics, external links |
+| Tracked-file privacy | Synthetic/public content and permitted file types | Phone and identity patterns, local paths, credentials, binary payloads, hidden/private paths, symlinks, non-synthetic domains |
+| Links and scripts | Tracked relative Markdown/HTML targets and self-hosted scripts | Missing targets, repository escape, and external executable scripts |
+| PDFs and artifacts | Text, metadata, page geometry, tagging, inactive content, governed hashes, pinned Chart.js marker | Wrong metadata, active PDF content, missing/mutated artifacts, dependency-marker drift |
+| Data and KPIs | 5 requisitions, 4,000 candidates, 2,000 interviews, 500 composites, 120 hires, 28.5 days, 1,836 SLA rows, AIR 0.87 | Reconciliation failure is category-only |
+| Offline history privacy | User-noreply author/committer; exact platform committer on a two-parent merge; documented legacy exception | Personal author/committer, arbitrary GitHub-domain identity, platform author, single-parent platform committer, adjacent misuse of legacy exception |
+| Hosted merge provenance | Sanitized PR #15 merge shape; exact actor; valid verified signature; two parents; merged-PR association | Wrong actor, bad/missing signature, parent mismatch, no/mismatched PR, malformed response, unavailable API, invalid context |
+| Redaction | Passing CLIs emit counts | Failures emit only category, path or abbreviated commit; matched identities, secrets, responses, exception details, and tokens are not emitted |
+| Workflow | Immutable action pins and push-only hosted provenance job | Contract requires read-only contents and job-scoped pull-request permission |
 
-## Claim mismatch
+## Coverage observation
 
-At the audited baseline, the README said the acceptance suite checked “exact inventory, schemas, row counts, references, scoring arithmetic, KPI reconciliation, privacy patterns, enterprise pagination controls, embedded JSON parity, and five-slide contract.” The current implementation verifies only part of row counts, KPI reconciliation, basic privacy patterns, required assets, and local HTML link existence. The Stage 0 branch corrects the README to match those four implemented tests.
+The standard-library `trace` run on 2026-09-02 reports:
 
-## Manual/live baseline coverage
+- `scripts/github_provenance_audit.py`: 92% line coverage.
+- `scripts/repository_audit.py`: 91% line coverage.
 
-| Surface | Coverage performed | Result |
-|---|---|---|
-| Dashboard desktop | Load, viewport width, screenshot | Passed; 1440 px document width at 1440 px viewport |
-| Dashboard phone | Load, screenshot, horizontal-overflow measurement | Failed layout check; 707 px document width at 375 px viewport |
-| Candidate search | Search for synthetic ID `CAND-2026-0013` | Passed; one expected row |
-| Scorecard drawer | Open on phone, inspect accessible close control, close | Passed in tested path |
-| Slide deck | Next control on phone, screenshot, console | Functional; content overlap observed |
-| Phone case study | Load and width check at 375×812 | Passed; no document-level overflow |
-| Console | Tested dashboard and slide interactions | No console errors observed |
-| Basic semantics | Page language/title, headings, landmarks, control names, dialog metadata | Present in sampled dashboard state |
+This is line execution evidence, not proof that every semantic state or external failure mode has been modeled.
 
-## Coverage gaps for Stage 1
+## Test-first evidence
 
-- No CI workflow or branch quality gate.
-- No repeatable browser/E2E suite.
-- No automated viewport matrix or overflow assertion.
-- No automated accessibility engine, keyboard-flow suite, focus-trap assertion, contrast check, reduced-motion check, or screen-reader verification.
-- No test for dashboard/CSV parity or prevention of duplicate application sources.
-- No full schema, foreign-key, uniqueness, enumerated-value, or formula contract.
-- No tests for every documented UAT scenario; the UAT register is a specification, not an execution record.
-- No PDF text, metadata, page-count, link, or rendering regression test.
-- No dependency integrity/hash check, update automation, or advisory scan in CI.
-- No performance budget.
+Before policy implementation, the expanded 40-test run produced 2 expected failures and 9 expected errors. The failures represented the existing false positive and missing workflow contract; the errors represented the intentionally absent identity-record and provenance interfaces. After implementation and edge-case hardening, 55 tests pass.
 
-## Stage 1 quality-gate contract
+## Remaining Stage 1 gaps
 
-The first implementation stage should convert the evidence above into deterministic CI checks: clean-clone unit tests, exact tracked-file privacy scanning, schema and KPI contracts, link validation, browser smoke tests, phone-width assertions, accessibility automation, dependency checks, and a documented performance budget. Passing tests must not be described as production readiness.
+- Exact CSV schemas, nullability, identifier sequencing, foreign keys, enumerations, downstream stage consistency, and per-requisition totals.
+- Embedded dashboard JSON-to-CSV parity and five-slide content contracts.
+- Browser-verifiable pagination, responsive viewport matrices, keyboard/focus behavior, automated accessibility checks, and performance budgets.
+- Continuous dependency advisory monitoring.
+- Real-world identity proof beyond metadata reported and signed by GitHub.
+- Availability of the hosted provenance check when GitHub's API or token permission is unavailable; the control intentionally fails closed.
+
+Passing this suite establishes repository consistency for the current synthetic demonstration. It does not establish production readiness, legal compliance, selection validity, accessibility conformance, or security certification.

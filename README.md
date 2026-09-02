@@ -85,7 +85,7 @@ The 4/5ths result is a monitoring signal rather than proof of fairness or lawful
    python3 scripts/repository_audit.py --all
    ```
 
-The 30-test suite and executable audit verify tracked-file policy, privacy and high-confidence secret patterns, relative links, external executable scripts, PDF text and metadata, governed artifact hashes, all 500 composite calculations, core KPI reconciliation, workflow pins, and commit identities. See [Repository Quality Gates](QUALITY_GATES.md) for prerequisites, individual checks, CI behavior, the narrow legacy-history exception, and limitations.
+The 55-test suite and executable audit verify tracked-file policy, privacy and high-confidence secret patterns, relative links, external executable scripts, PDF text and metadata, governed artifact hashes, all 500 composite calculations, core KPI reconciliation, workflow pins, history privacy, redacted failure behavior, and positive and negative GitHub merge-provenance cases. A separate push-to-main CI job verifies platform-generated merge commits against GitHub's actor, signature, parent, and merged-PR evidence. See [Repository Quality Gates](QUALITY_GATES.md) and the [identity privacy and provenance method](docs/audit/IDENTITY_PRIVACY_AND_PROVENANCE_METHOD.md) for the control boundary and limitations.
 
 Full schemas and foreign keys, embedded JSON/CSV parity, browser interaction, responsive/accessibility behavior, and the five-slide content contract remain outside this stage. Those gaps are tracked in the [Stage 0 test-coverage map](docs/audit/TEST_COVERAGE_MAP.md) and the linked Stage 1 issues.
 
