@@ -6,83 +6,205 @@
   <meta name="description" content="Five-slide executive case deck for the Structured Hiring and ATS Architecture Lab.">
   <title>Structured Hiring & ATS Architecture Lab · Case Deck</title>
   <style>
-    :root { color-scheme: dark; --navy:#07111f; --panel:#0e2034; --ink:#edf4ff; --muted:#9babc0; --teal:#40e0c1; --blue:#6ea8fe; --amber:#f6c86e; --line:rgba(148,163,184,.2); }
+    :root { color-scheme:dark; --navy:#07131c; --panel:#0d202a; --ink:#f2f7f5; --body:#c4d1d2; --muted:#96a9ac; --teal:#55dbc8; --amber:#f0b45a; --line:rgba(184,205,207,.24); }
     * { box-sizing:border-box; }
-    html, body { margin:0; min-height:100%; background:#050c16; color:var(--ink); font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    html,body { margin:0; min-height:100%; background:#050d13; color:var(--ink); font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
     body { overflow:hidden; }
-    .deck { min-height:100vh; position:relative; background:radial-gradient(circle at 8% 4%,rgba(64,224,193,.12),transparent 32rem),radial-gradient(circle at 96% 92%,rgba(110,168,254,.12),transparent 28rem),var(--navy); }
-    .deck::before { content:""; position:fixed; inset:0; pointer-events:none; opacity:.18; background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px); background-size:44px 44px; }
-    .progress-track { position:fixed; z-index:20; left:0; right:0; top:0; height:4px; background:rgba(255,255,255,.06); }
-    #progress-bar { width:20%; height:100%; background:linear-gradient(90deg,var(--teal),var(--blue)); transition:width .35s ease; box-shadow:0 0 18px rgba(64,224,193,.5); }
-    .slide { display:none; position:absolute; inset:0; padding:clamp(52px,7vw,108px); place-content:center; overflow:auto; }
-    .slide.active { display:grid; animation:enter .38s ease both; }
-    @keyframes enter { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
-    .frame { width:min(1240px,100%); margin:auto; }
-    .eyebrow { color:var(--teal); font-size:clamp(.68rem,1vw,.85rem); text-transform:uppercase; letter-spacing:.2em; font-weight:800; }
-    h1, h2 { margin:14px 0 20px; letter-spacing:-.055em; line-height:1; }
-    h1 { max-width:1100px; font-size:clamp(3.2rem,8vw,7.2rem); }
-    h2 { max-width:1000px; font-size:clamp(2.3rem,5.5vw,5rem); }
-    .lead { max-width:850px; color:#a9b8ca; font-size:clamp(1rem,1.7vw,1.35rem); line-height:1.65; }
-    .chips { display:flex; flex-wrap:wrap; gap:9px; margin-top:32px; }
-    .chip { border:1px solid var(--line); background:rgba(14,32,52,.7); padding:9px 12px; border-radius:999px; color:#c6d4e5; font-size:.8rem; }
-    .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:34px; }
-    .card { border:1px solid var(--line); border-radius:18px; background:rgba(14,32,52,.78); padding:22px; backdrop-filter:blur(12px); }
-    .card .num { color:var(--teal); font:800 .75rem/1 ui-monospace,SFMono-Regular,monospace; letter-spacing:.08em; }
-    .card h3 { margin:12px 0 9px; font-size:1.05rem; }
-    .card p { margin:0; color:var(--muted); font-size:.86rem; line-height:1.55; }
-    .flow { display:grid; grid-template-columns:repeat(6,1fr); gap:8px; margin-top:32px; }
-    .flow div { min-height:130px; padding:17px 13px; border-radius:14px; background:linear-gradient(160deg,rgba(22,48,75,.95),rgba(12,27,45,.9)); border:1px solid var(--line); }
-    .flow b { display:block; color:var(--teal); font-size:.7rem; margin-bottom:18px; }
-    .flow span { font-weight:750; line-height:1.25; }
-    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:30px; align-items:stretch; margin-top:26px; }
-    .formula { display:grid; place-content:center; min-height:290px; border:1px solid rgba(64,224,193,.2); border-radius:20px; background:linear-gradient(145deg,rgba(64,224,193,.09),rgba(14,32,52,.6)); padding:28px; }
-    .formula code { color:#c8fff4; font:700 clamp(1rem,1.8vw,1.35rem)/1.8 ui-monospace,SFMono-Regular,monospace; }
-    .control-case { min-height:290px; padding:28px; border:1px solid rgba(246,200,110,.22); border-radius:20px; background:linear-gradient(145deg,rgba(246,200,110,.08),rgba(14,32,52,.6)); }
-    .control-case h3 { margin:4px 0 18px; font-size:1.3rem; }
-    .math-row { display:flex; justify-content:space-between; align-items:end; padding:13px 0; border-bottom:1px solid var(--line); color:var(--muted); }
-    .math-row strong { color:white; font-size:1.45rem; }
-    .math-row:last-child strong { color:var(--amber); }
-    .governance { display:grid; grid-template-columns:1.15fr .85fr; gap:18px; margin-top:26px; }
-    .rate-box { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-    .rate { padding:20px; border-radius:16px; border:1px solid var(--line); background:rgba(14,32,52,.78); }
-    .rate span { color:var(--muted); font-size:.75rem; }
-    .rate strong { display:block; margin-top:8px; font-size:2rem; }
-    .air { grid-column:1/-1; background:linear-gradient(120deg,rgba(64,224,193,.1),rgba(110,168,254,.1)); }
-    .guardrails { margin:0; padding:23px 23px 23px 42px; border-radius:16px; border:1px solid var(--line); background:rgba(14,32,52,.72); color:#b8c5d6; line-height:1.7; }
-    .results { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin:30px 0; }
-    .result { padding:18px 14px; border-radius:15px; border:1px solid var(--line); background:rgba(14,32,52,.75); }
-    .result strong { display:block; font-size:clamp(1.5rem,3vw,2.5rem); letter-spacing:-.04em; }
-    .result span { color:var(--muted); font-size:.73rem; }
-    .next { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
-    .next div { padding:17px; border-left:3px solid var(--teal); background:rgba(14,32,52,.52); color:#b7c5d6; font-size:.86rem; line-height:1.5; }
-    .controls { position:fixed; z-index:20; left:clamp(18px,3vw,44px); right:clamp(18px,3vw,44px); bottom:22px; display:flex; justify-content:space-between; align-items:center; pointer-events:none; }
-    .controls button { pointer-events:auto; width:44px; height:44px; border-radius:50%; color:white; border:1px solid var(--line); background:rgba(14,32,52,.85); font-size:1.2rem; cursor:pointer; }
+    .deck { min-height:100vh; position:relative; background:var(--navy); }
+    .progress-track { position:fixed; z-index:20; inset:0 0 auto; height:3px; background:rgba(255,255,255,.08); }
+    #progress-bar { width:20%; height:100%; background:var(--teal); transition:width .3s ease; }
+    .slide { display:none; position:absolute; inset:0; padding:clamp(54px,6vw,92px); place-content:center; overflow:auto; }
+    .slide.active { display:grid; animation:enter .28s ease both; }
+    @keyframes enter { from { opacity:0; transform:translateY(7px); } to { opacity:1; transform:none; } }
+    .frame { width:min(1220px,100%); margin:auto; }
+    .eyebrow { color:var(--teal); font-size:clamp(.75rem,.9vw,.88rem); text-transform:uppercase; letter-spacing:.18em; font-weight:800; }
+    h1,h2 { margin:12px 0 18px; letter-spacing:-.045em; line-height:1.02; text-wrap:balance; }
+    h1 { max-width:1050px; font-size:clamp(3.4rem,7.3vw,6.8rem); }
+    h2 { max-width:1050px; font-size:clamp(2.35rem,4.9vw,4.5rem); }
+    .lead { max-width:820px; margin:0; color:var(--body); font-size:clamp(1.05rem,1.55vw,1.3rem); line-height:1.5; }
+    .evidence-strip { display:grid; grid-template-columns:repeat(4,1fr); margin-top:42px; border-block:1px solid var(--line); }
+    .evidence-item { padding:18px 22px 18px 0; }
+    .evidence-item + .evidence-item { padding-left:22px; border-left:1px solid var(--line); }
+    .evidence-item strong { display:block; font-size:clamp(1.35rem,2vw,1.85rem); font-variant-numeric:tabular-nums; }
+    .evidence-item span { display:block; margin-top:4px; color:var(--muted); font-size:.84rem; line-height:1.35; }
+    .boundary-note { margin-top:18px; padding-left:14px; border-left:4px solid var(--amber); color:var(--body); font-size:.92rem; line-height:1.4; }
+    .evidence-path { position:relative; display:grid; grid-template-columns:repeat(6,1fr); gap:18px; margin:34px 0 30px; padding:0; list-style:none; }
+    .evidence-path::before { content:""; position:absolute; z-index:0; top:18px; left:18px; right:18px; height:1px; background:var(--line); }
+    .evidence-path li { position:relative; z-index:1; min-width:0; }
+    .stage-number { display:grid; width:36px; height:36px; place-items:center; margin-bottom:12px; border:1px solid var(--teal); border-radius:50%; background:var(--navy); color:var(--teal); font:800 .76rem/1 ui-monospace,SFMono-Regular,Menlo,monospace; }
+    .stage-label { display:block; color:var(--ink); font-size:.94rem; font-weight:750; line-height:1.3; }
+    .control-register { border-top:1px solid var(--line); }
+    .control-row { display:grid; grid-template-columns:135px 220px 1fr; gap:22px; align-items:start; padding:15px 0; border-bottom:1px solid var(--line); }
+    .state { font:800 .76rem/1.2 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.08em; }
+    .control-row[data-state="proposed"] .state { color:var(--amber); }
+    .control-row[data-state="modeled"] .state { color:var(--body); }
+    .control-row[data-state="tested"] .state { color:var(--teal); }
+    .control-row h3 { margin:0; font-size:1rem; line-height:1.3; }
+    .control-row p { margin:0; max-width:730px; color:var(--body); font-size:.9rem; line-height:1.45; }
+    .selection-layout { display:grid; grid-template-columns:.92fr 1.08fr; gap:54px; align-items:stretch; margin-top:34px; }
+    .formula-panel { display:flex; flex-direction:column; justify-content:center; padding-right:46px; border-right:1px solid var(--line); }
+    .section-label { color:var(--muted); font-size:.8rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
+    .formula { margin:18px 0 12px; color:var(--teal); font:750 clamp(1.25rem,2vw,1.65rem)/1.7 ui-monospace,SFMono-Regular,Menlo,monospace; }
+    .formula-note { margin:0; color:var(--body); font-size:.94rem; line-height:1.45; }
+    .control-case h3 { margin:7px 0 18px; font-size:1.35rem; }
+    .math-row { display:grid; grid-template-columns:1fr auto; gap:24px; align-items:end; padding:12px 0; border-bottom:1px solid var(--line); }
+    .math-row span { color:var(--body); font-size:.9rem; }
+    .math-row strong { color:var(--ink); font-size:clamp(2rem,3.1vw,2.8rem); line-height:1; font-variant-numeric:tabular-nums; }
+    .math-row.gap strong { color:var(--amber); }
+    .case-conclusion { margin:18px 0 0; padding:12px 0 0; border-top:3px solid var(--amber); color:var(--ink); font-size:1rem; font-weight:700; line-height:1.4; }
+    .fairness-layout { display:grid; grid-template-columns:1.06fr .94fr; gap:58px; margin-top:34px; }
+    .cohort-comparison { border-top:1px solid var(--line); }
+    .cohort { display:grid; grid-template-columns:1fr auto; gap:20px; align-items:end; padding:16px 0; border-bottom:1px solid var(--line); }
+    .cohort span { color:var(--body); font-size:.9rem; }
+    .cohort strong { color:var(--ink); font-size:clamp(1.8rem,3vw,2.65rem); line-height:1; font-variant-numeric:tabular-nums; }
+    .ratio-equation { margin-top:22px; padding:16px 0; border-block:3px solid var(--teal); }
+    .ratio-equation strong { display:block; margin-top:5px; color:var(--teal); font-size:clamp(2rem,3.6vw,3rem); font-variant-numeric:tabular-nums; }
+    .governance-conclusions { margin:0; padding:0; list-style:none; counter-reset:conclusion; }
+    .governance-conclusions li { position:relative; padding:0 0 16px 38px; color:var(--body); font-size:.93rem; line-height:1.42; }
+    .governance-conclusions li::before { counter-increment:conclusion; content:"0" counter(conclusion); position:absolute; left:0; top:2px; color:var(--teal); font:800 .72rem/1.2 ui-monospace,SFMono-Regular,Menlo,monospace; }
+    .governance-conclusions strong { color:var(--ink); }
+    .executive-scorecard { display:grid; grid-template-columns:repeat(5,1fr); margin:34px 0 38px; border-block:1px solid var(--line); }
+    .score { padding:20px 18px 18px 0; }
+    .score + .score { padding-left:18px; border-left:1px solid var(--line); }
+    .score strong { display:block; color:var(--ink); font-size:clamp(2rem,3.2vw,2.85rem); line-height:1; letter-spacing:-.035em; font-variant-numeric:tabular-nums; }
+    .score span { display:block; margin-top:8px; color:var(--body); font-size:.82rem; line-height:1.3; }
+    .action-sequence { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; counter-reset:action; }
+    .action { position:relative; padding-top:16px; border-top:3px solid var(--teal); color:var(--body); font-size:.9rem; line-height:1.42; }
+    .action::before { counter-increment:action; content:"0" counter(action); display:block; margin-bottom:7px; color:var(--teal); font:800 .74rem/1 ui-monospace,SFMono-Regular,Menlo,monospace; }
+    .action strong { color:var(--ink); }
+    .final-warning { margin-top:24px; padding:14px 0; border-block:1px solid var(--amber); color:var(--ink); font-size:.92rem; font-weight:700; line-height:1.4; }
+    .controls { position:fixed; z-index:20; left:clamp(18px,3vw,44px); right:clamp(18px,3vw,44px); bottom:20px; display:flex; justify-content:space-between; align-items:center; pointer-events:none; }
+    .controls button { pointer-events:auto; width:44px; height:44px; border-radius:50%; color:var(--ink); border:1px solid var(--line); background:var(--panel); font-size:1.2rem; cursor:pointer; }
     .controls button:disabled { opacity:.3; cursor:default; }
-    #slide-counter { color:#8395ab; font:700 .75rem/1 ui-monospace,SFMono-Regular,monospace; letter-spacing:.1em; }
-    .hint { position:fixed; z-index:20; right:clamp(18px,3vw,44px); top:22px; color:#70839b; font-size:.7rem; }
-    @media (max-width:900px) { .flow { grid-template-columns:repeat(3,1fr); } .grid-3,.next { grid-template-columns:1fr; } .two-col,.governance { grid-template-columns:1fr; } .results { grid-template-columns:repeat(3,1fr); } }
-    @media (max-width:600px) { .slide { padding:60px 22px 88px; place-content:start; } .flow { grid-template-columns:1fr 1fr; } .results { grid-template-columns:1fr 1fr; } .hint { display:none; } }
+    #slide-counter { color:var(--muted); font:700 .75rem/1 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.1em; }
+    .hint { position:fixed; z-index:20; right:clamp(18px,3vw,44px); top:20px; color:var(--muted); font-size:.72rem; }
+    @media (max-width:900px) {
+      .slide { padding:60px 38px 82px; place-content:start; }
+      .evidence-strip { grid-template-columns:repeat(2,1fr); }
+      .evidence-item:nth-child(3) { border-left:0; }
+      .evidence-item:nth-child(n+3) { border-top:1px solid var(--line); }
+      .evidence-path { grid-template-columns:repeat(3,1fr); }
+      .evidence-path::before { display:none; }
+      .control-row { grid-template-columns:110px 190px 1fr; }
+      .selection-layout,.fairness-layout { grid-template-columns:1fr; gap:28px; }
+      .formula-panel { padding:0 0 26px; border:0; border-bottom:1px solid var(--line); }
+      .executive-scorecard { grid-template-columns:repeat(3,1fr); }
+      .score:nth-child(4) { border-left:0; border-top:1px solid var(--line); }
+      .score:nth-child(5) { border-top:1px solid var(--line); }
+    }
+    @media (max-width:600px) {
+      .slide { padding:58px 22px 84px; }
+      h1 { font-size:clamp(2.8rem,14vw,4.2rem); }
+      h2 { font-size:clamp(2rem,10vw,3rem); }
+      .evidence-strip,.evidence-path,.executive-scorecard,.action-sequence { grid-template-columns:1fr 1fr; }
+      .control-row { grid-template-columns:1fr; gap:6px; }
+      .action-sequence .action:last-child { grid-column:1/-1; }
+      .hint { display:none; }
+    }
+    @media (max-height:500px) and (orientation:landscape) {
+      .slide { padding:32px 42px 54px; place-content:start; }
+      .frame { max-width:760px; }
+      h1 { font-size:2.8rem; margin:7px 0 10px; }
+      h2 { font-size:2rem; margin:7px 0 10px; }
+      .lead { font-size:.9rem; }
+      .evidence-strip,.executive-scorecard { margin:18px 0; }
+      .evidence-item,.score { padding-top:10px; padding-bottom:10px; }
+      .evidence-path { margin:16px 0; }
+      .control-row { padding:9px 0; }
+      .selection-layout,.fairness-layout { margin-top:16px; }
+      .action { font-size:.86rem; }
+      .controls { bottom:6px; }
+      .controls button { width:36px; height:36px; }
+      #slide-counter { font-size:.68rem; }
+    }
     @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none !important; transition:none !important; } }
     @media print {
+      :root {
+        --print-paper:#fbfcfa;
+        --print-ink-color:#10212b;
+        --print-body-color:#334a56;
+        --print-muted-color:#465d68;
+        --print-teal-color:#0b6b63;
+        --print-amber-color:#8a4b00;
+        --print-cover:60pt;
+        --print-title:36pt;
+        --print-eyebrow:12pt;
+        --print-body:15pt;
+        --print-label:13pt;
+        --print-caption:12pt;
+        --print-formula:22pt;
+        --print-kpi:34pt;
+      }
       @page { size:13.333in 7.5in; margin:0; }
-      html,body { background:white; overflow:visible; }
-      .deck { background:white; color:#0b1728; }
-      .deck::before,.progress-track,.controls,.hint { display:none !important; }
-      .slide,.slide.active,.slide[aria-hidden="true"] { position:relative !important; display:block !important; width:13.333in; height:7.5in; padding:.48in .62in; overflow:hidden; page-break-after:always; break-after:page; animation:none !important; opacity:1 !important; visibility:visible !important; transform:none !important; }
+      html,body { background:var(--print-paper); overflow:visible; }
+      .deck { background:var(--print-paper); color:var(--print-ink-color); }
+      .progress-track,.controls,.hint { display:none !important; }
+      .slide,.slide.active,.slide[aria-hidden="true"] { position:relative !important; display:block !important; width:13.333in; height:7.5in; padding:.46in .62in; overflow:hidden; page-break-after:always; break-after:page; animation:none !important; opacity:1 !important; visibility:visible !important; transform:none !important; }
       .slide:last-of-type { page-break-after:auto; }
       .frame { display:flex; height:100%; flex-direction:column; justify-content:center; }
-      h2 { font-size:36pt; margin:6pt 0 12pt; }
-      #slide-2 .flow { gap:6px; margin-top:8pt; }
-      #slide-2 .flow div { min-height:84px; padding:11px; }
-      #slide-2 .flow b { margin-bottom:7px; }
-      #slide-2 .grid-3 { gap:8px; margin-top:10px; }
-      #slide-2 .card { padding:12px; }
-      #slide-2 .card h3 { margin:7px 0 5px; font-size:.9rem; }
-      #slide-2 .card p { font-size:.72rem; line-height:1.4; }
-      .lead,.card p,.guardrails,.next div { color:#44566b; }
-      .card,.flow div,.formula,.control-case,.rate,.guardrails,.result,.next div { background:white; color:#102033; box-shadow:none; border-color:#cbd5e1; }
-      .formula code { color:#0f766e; }
-      .math-row strong { color:#102033; }
+      .eyebrow { color:var(--print-teal-color); font-size:var(--print-eyebrow); }
+      h1,h2 { color:var(--print-ink-color); }
+      h1 { max-width:10.5in; font-size:var(--print-cover); margin:8pt 0 18pt; }
+      h2 { max-width:11.7in; font-size:var(--print-title); margin:7pt 0 15pt; }
+      .lead { max-width:9.4in; color:var(--print-body-color); font-size:var(--print-body); line-height:1.45; }
+      .evidence-strip { grid-template-columns:repeat(4,1fr); margin-top:30pt; border-color:#a6b2b7; }
+      .evidence-item:nth-child(3) { border-left:1px solid #a6b2b7; }
+      .evidence-item:nth-child(n+3) { border-top:0; }
+      .evidence-item { padding:14pt 14pt 14pt 0; }
+      .evidence-item + .evidence-item { padding-left:14pt; border-color:#a6b2b7; }
+      .evidence-item strong { color:var(--print-ink-color); font-size:24pt; }
+      .evidence-item span { color:var(--print-muted-color); font-size:var(--print-label); }
+      .boundary-note { margin-top:15pt; color:var(--print-body-color); border-color:var(--print-amber-color); font-size:var(--print-caption); }
+      #slide-2 h2 { font-size:34pt; margin-bottom:10pt; }
+      .evidence-path { grid-template-columns:repeat(6,1fr); gap:12pt; margin:18pt 0 20pt; }
+      .evidence-path::before { display:block; }
+      .evidence-path::before { top:15pt; left:15pt; right:15pt; background:#a6b2b7; }
+      .stage-number { width:30pt; height:30pt; margin-bottom:9pt; border-color:var(--print-teal-color); background:var(--print-paper); color:var(--print-teal-color); font-size:var(--print-caption); }
+      .stage-label { color:var(--print-ink-color); font-size:var(--print-label); line-height:1.28; }
+      .control-register,.control-row { border-color:#a6b2b7; }
+      .control-row { grid-template-columns:105pt 175pt 1fr; gap:16pt; padding:10pt 0; }
+      .state { font-size:var(--print-caption); }
+      .control-row[data-state="proposed"] .state { color:var(--print-amber-color); }
+      .control-row[data-state="modeled"] .state { color:var(--print-body-color); }
+      .control-row[data-state="tested"] .state { color:var(--print-teal-color); }
+      .control-row h3 { color:var(--print-ink-color); font-size:var(--print-body); }
+      .control-row p { color:var(--print-body-color); font-size:var(--print-body); line-height:1.37; }
+      #slide-3 h2 { font-size:34pt; }
+      .selection-layout { grid-template-columns:.92fr 1.08fr; gap:38pt; margin-top:18pt; }
+      .formula-panel { padding:0 34pt 0 0; border:0; border-right:1px solid #a6b2b7; }
+      .section-label { color:var(--print-muted-color); font-size:var(--print-label); }
+      .formula { margin:14pt 0 10pt; color:var(--print-teal-color); font-size:var(--print-formula); line-height:1.55; }
+      .formula-note { color:var(--print-body-color); font-size:var(--print-body); }
+      .control-case h3 { color:var(--print-ink-color); font-size:20pt; margin:6pt 0 12pt; }
+      .math-row { padding:9pt 0; border-color:#a6b2b7; }
+      .math-row span { color:var(--print-body-color); font-size:var(--print-label); }
+      .math-row strong { color:var(--print-ink-color); font-size:30pt; }
+      .math-row.gap strong { color:var(--print-amber-color); }
+      .case-conclusion { margin-top:13pt; padding-top:9pt; border-color:var(--print-amber-color); color:var(--print-ink-color); font-size:var(--print-body); }
+      #slide-4 h2 { font-size:34pt; }
+      .fairness-layout { grid-template-columns:1.06fr .94fr; gap:40pt; margin-top:18pt; }
+      .cohort-comparison,.cohort { border-color:#a6b2b7; }
+      .cohort { padding:11pt 0; }
+      .cohort span { color:var(--print-body-color); font-size:var(--print-label); }
+      .cohort strong { color:var(--print-ink-color); font-size:28pt; }
+      .ratio-equation { margin-top:14pt; padding:10pt 0; border-color:var(--print-teal-color); }
+      .ratio-equation strong { color:var(--print-teal-color); font-size:32pt; }
+      .governance-conclusions li { padding:0 0 12pt 30pt; color:var(--print-body-color); font-size:var(--print-body); line-height:1.38; }
+      .governance-conclusions li::before { color:var(--print-teal-color); font-size:var(--print-caption); }
+      .governance-conclusions strong { color:var(--print-ink-color); }
+      #slide-5 h2 { font-size:34pt; }
+      .executive-scorecard { grid-template-columns:repeat(5,1fr); margin:20pt 0 24pt; border-color:#a6b2b7; }
+      .score:nth-child(4) { border-left:1px solid #a6b2b7; border-top:0; }
+      .score:nth-child(5) { border-top:0; }
+      .score { padding:14pt 12pt 13pt 0; }
+      .score + .score { padding-left:12pt; border-color:#a6b2b7; }
+      .score strong { color:var(--print-ink-color); font-size:var(--print-kpi); }
+      .score span { color:var(--print-body-color); font-size:var(--print-label); }
+      .action-sequence { grid-template-columns:repeat(3,1fr); gap:22pt; }
+      .action { padding-top:11pt; border-color:var(--print-teal-color); color:var(--print-body-color); font-size:var(--print-body); line-height:1.38; }
+      .action::before { color:var(--print-teal-color); font-size:var(--print-caption); }
+      .action strong { color:var(--print-ink-color); }
+      .final-warning { margin-top:17pt; padding:10pt 0; border-color:var(--print-amber-color); color:var(--print-ink-color); font-size:var(--print-caption); }
     }
   </style>
 </head>
@@ -90,71 +212,95 @@
   <main class="deck" aria-live="polite">
     <div class="progress-track" aria-hidden="true"><div id="progress-bar"></div></div>
     <div class="hint">Use ← → arrow keys</div>
-
     <section class="slide active" id="slide-1" aria-label="Slide 1 of 5">
       <div class="frame">
         <div class="eyebrow">Structured Hiring & ATS Architecture Lab</div>
         <h1>Evidence over instinct.</h1>
-        <p class="lead">A privacy-first enterprise hiring system for a fictional precision manufacturer—built to keep automated screening and structured evidence reviewable across 4,000 applications.</p>
-        <div class="chips"><span class="chip">100% synthetic</span><span class="chip">5 requisitions</span><span class="chip">4,000 applicants</span><span class="chip">120 hires</span><span class="chip">14 UAT scenarios</span></div>
+        <p class="lead">A reviewable hiring architecture modeled across 4,000 fictional applications, from requisition controls to structured selection evidence.</p>
+        <div class="evidence-strip" aria-label="Project evidence summary">
+          <div class="evidence-item"><strong>4,000</strong><span>100% synthetic applications</span></div>
+          <div class="evidence-item"><strong>5</strong><span>requisition families</span></div>
+          <div class="evidence-item"><strong>120</strong><span>modeled hires</span></div>
+          <div class="evidence-item"><strong>14</strong><span>documented UAT scenarios</span></div>
+        </div>
+        <div class="boundary-note"><strong>Reference implementation under development.</strong> Demonstration only. Not for real applicant data.</div>
       </div>
     </section>
-
     <section class="slide" id="slide-2" aria-label="Slide 2 of 5">
       <div class="frame">
         <div class="eyebrow">Architecture</div>
-        <h2>Six stages. One controlled evidence trail.</h2>
-        <div class="flow">
-          <div><b>01</b><span>Authorize the requisition</span></div>
-          <div><b>02</b><span>Blind automated knockout</span></div>
-          <div><b>03</b><span>Standard phone screen</span></div>
-          <div><b>04</b><span>Work sample + BARS</span></div>
-          <div><b>05</b><span>Calibrate + offer</span></div>
-          <div><b>06</b><span>Transfer + purge</span></div>
-        </div>
-        <div class="grid-3">
-          <article class="card"><div class="num">CONTROL 01</div><h3>Safe batch automation</h3><p>Versioned job rules, idempotent transitions, human review, appeal, and kill switch.</p></article>
-          <article class="card"><div class="num">CONTROL 02</div><h3>Locked before discussion</h3><p>500 finalists are scored independently before panel evidence becomes visible.</p></article>
-          <article class="card"><div class="num">CONTROL 03</div><h3>Timed accountability</h3><p>2,000 events follow the 24-hour reminder, 48-hour breach, and 72-hour hold.</p></article>
+        <h2>Six design stages. One traceable evidence model.</h2>
+        <ol class="evidence-path">
+          <li><span class="stage-number">01</span><span class="stage-label">Authorize the requisition</span></li>
+          <li><span class="stage-number">02</span><span class="stage-label">Specify job-related knockouts</span></li>
+          <li><span class="stage-number">03</span><span class="stage-label">Standard phone screen</span></li>
+          <li><span class="stage-number">04</span><span class="stage-label">Work sample + BARS</span></li>
+          <li><span class="stage-number">05</span><span class="stage-label">Calibrate + offer</span></li>
+          <li><span class="stage-number">06</span><span class="stage-label">Propose transfer + erasure controls</span></li>
+        </ol>
+        <div class="control-register" aria-label="Control status register">
+          <article class="control-row" data-state="proposed"><div class="state">PROPOSED</div><h3>Automation guardrails</h3><p>Production requirements specify versioned rules, idempotent transitions, human review, appeal and a kill switch.</p></article>
+          <article class="control-row" data-state="modeled"><div class="state">MODELED</div><h3>Evidence locked first</h3><p>Synthetic finalist scores are calculated before subjective comparison; runtime panel-access control is not implemented.</p></article>
+          <article class="control-row" data-state="tested"><div class="state">TESTED</div><h3>48-hour SLA rule</h3><p>2,000 synthetic events are deterministically classified against the documented feedback threshold.</p></article>
         </div>
       </div>
     </section>
-
     <section class="slide" id="slide-3" aria-label="Slide 3 of 5">
       <div class="frame">
         <div class="eyebrow">Selection model</div>
         <h2>A stronger story cannot outrank stronger evidence.</h2>
-        <div class="two-col">
-          <div class="formula"><code>Composite =<br>0.40 × Work Sample<br>+ 0.40 × Structured BARS<br>+ 0.20 × Job Knowledge</code></div>
-          <div class="control-case"><div class="eyebrow">CAND-2026-0013</div><h3>Halo-effect control case</h3><div class="math-row"><span>Subjective impression</span><strong>4.60</strong></div><div class="math-row"><span>Governed composite</span><strong>3.92</strong></div><div class="math-row"><span>Reviewable gap</span><strong>+0.68</strong></div></div>
+        <div class="selection-layout">
+          <div class="formula-panel"><div class="section-label">Governed composite</div><code class="formula">Composite =<br>0.40 × Work Sample<br>+ 0.40 × Structured BARS<br>+ 0.20 × Job Knowledge</code><p class="formula-note">Weights are fixed before subjective comparison.</p></div>
+          <div class="control-case">
+            <div class="eyebrow">CAND-2026-0013</div><h3>Halo-effect control case</h3>
+            <div class="math-row"><span>Subjective impression</span><strong>4.60</strong></div>
+            <div class="math-row"><span>Governed composite</span><strong>3.92</strong></div>
+            <div class="math-row gap"><span>Reviewable gap</span><strong>+0.68</strong></div>
+            <p class="case-conclusion">The higher impression does not replace the governed score.</p>
+          </div>
         </div>
       </div>
     </section>
-
     <section class="slide" id="slide-4" aria-label="Slide 4 of 5">
       <div class="frame">
         <div class="eyebrow">Fairness + privacy</div>
-        <h2>Monitor outcomes without exposing people.</h2>
-        <div class="governance">
-          <div class="rate-box">
-            <div class="rate"><span>Reference progression</span><strong>624 / 2,400</strong></div>
-            <div class="rate"><span>Focal progression</span><strong>362 / 1,600</strong></div>
-            <div class="rate air"><span>Knockout-progression impact ratio</span><strong>0.87</strong></div>
+        <h2>Modeled outcomes. Separated synthetic fields.</h2>
+        <div class="fairness-layout">
+          <div>
+            <div class="cohort-comparison" aria-label="Modeled cohort progression">
+              <div class="cohort"><span>Reference progression<br>26.0% modeled rate</span><strong>624 / 2,400</strong></div>
+              <div class="cohort"><span>Focal progression<br>22.6% modeled rate</span><strong>362 / 1,600</strong></div>
+            </div>
+            <div class="ratio-equation"><span class="section-label">Knockout-progression impact ratio</span><strong>22.6% ÷ 26.0% = 0.87</strong></div>
           </div>
-          <ul class="guardrails"><li>Cohorts hidden from screeners and panels</li><li>Counts shown beside rates</li><li>Later-stage flags remain visible</li><li>Four-fifths is a rule of thumb—not proof</li><li>Rejected résumés queued for 180-day purge</li></ul>
+          <ol class="governance-conclusions">
+            <li><strong>Separation by design.</strong> Cohort fields are isolated from operational selection roles as a documented requirement.</li>
+            <li><strong>Counts remain visible</strong> beside modeled rates.</li>
+            <li><strong>Four-fifths is an indicator, not proof</strong> of compliance or absence of bias.</li>
+            <li><strong>Proposed production requirements</strong> include later-stage monitoring plus reviewed retention and erasure controls.</li>
+          </ol>
         </div>
       </div>
     </section>
-
     <section class="slide" id="slide-5" aria-label="Slide 5 of 5">
       <div class="frame">
-        <div class="eyebrow">Reconciled operating view</div>
-        <h2>A portfolio artifact built like a controlled product.</h2>
-        <div class="results"><div class="result"><strong>4,000</strong><span>Applicants</span></div><div class="result"><strong>3.0%</strong><span>120 hires</span></div><div class="result"><strong>28.5d</strong><span>Time to fill</span></div><div class="result"><strong>91.8%</strong><span>SLA adherence</span></div><div class="result"><strong>0.87</strong><span>Impact ratio</span></div></div>
-        <div class="next"><div><strong>Explore</strong><br>Open the interactive candidate evidence dashboard.</div><div><strong>Inspect</strong><br>Trace every KPI to the three source CSVs and data dictionary.</div><div><strong>Challenge</strong><br>Use the limitations, UAT, and governance matrices to test the design.</div></div>
+        <div class="eyebrow">Reconciled modeled view</div>
+        <h2>The model is inspectable by design.</h2>
+        <div class="executive-scorecard" aria-label="Governed KPI summary">
+          <div class="score"><strong>4,000</strong><span>Synthetic applicants</span></div>
+          <div class="score"><strong>3.0%</strong><span>120 modeled hires</span></div>
+          <div class="score"><strong>28.5d</strong><span>Modeled time to fill</span></div>
+          <div class="score"><strong>91.8%</strong><span>Modeled SLA adherence</span></div>
+          <div class="score"><strong>0.87</strong><span>Modeled impact ratio</span></div>
+        </div>
+        <div class="action-sequence" aria-label="Review sequence">
+          <div class="action"><strong>Explore</strong><br>Open the demonstration-only candidate evidence dashboard.</div>
+          <div class="action"><strong>Inspect</strong><br>Trace every KPI to three source CSVs and deterministic tests.</div>
+          <div class="action"><strong>Challenge</strong><br>Review assumptions before any operational use.</div>
+        </div>
+        <div class="final-warning">Not suitable for real applicant data. Operational use requires independent legal, security, accessibility and validation review.</div>
       </div>
     </section>
-
     <div class="controls">
       <button id="previous-slide" type="button" aria-label="Previous slide">←</button>
       <span id="slide-counter">01 / 05</span>

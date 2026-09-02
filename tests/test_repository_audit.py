@@ -2,8 +2,10 @@ import hashlib
 import io
 import os
 import subprocess
+import struct
 import tempfile
 import unittest
+import zlib
 from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
 from unittest import mock
@@ -94,6 +96,27 @@ class TrackedPathPolicyTests(unittest.TestCase):
             with self.subTest(path=path):
                 self.assertFalse(audit.is_allowed_tracked_path(path))
 
+    def test_only_governed_visual_evidence_png_paths_are_allowed(self):
+        governed = Path("docs/audit/visual/desktop-final-pages.png")
+        self.assertTrue(audit.is_allowed_tracked_path(governed))
+        self.assertFalse(audit.is_allowed_tracked_path(Path("screenshot.png")))
+
+    @staticmethod
+    def png_chunk(kind, payload):
+        body = kind + payload
+        return struct.pack(">I", len(payload)) + body + struct.pack(">I", zlib.crc32(body))
+
+    def test_governed_png_requires_safe_dimensions_and_no_text_metadata(self):
+        signature = b"\x89PNG\r\n\x1a\n"
+        ihdr = self.png_chunk(b"IHDR", struct.pack(">IIBBBBB", 1200, 900, 8, 2, 0, 0, 0))
+        iend = self.png_chunk(b"IEND", b"")
+        relative = Path("docs/audit/visual/desktop-final-pages.png")
+        self.assertEqual([], audit.png_visual_findings(relative, signature + ihdr + iend))
+
+        metadata = self.png_chunk(b"tEXt", b"Source\x00private workstation path")
+        findings = audit.png_visual_findings(relative, signature + ihdr + metadata + iend)
+        self.assertEqual(["PNG metadata"], [finding.category for finding in findings])
+
     def test_tracked_symlink_fails(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
@@ -162,7 +185,7 @@ class LinkAndScriptTests(unittest.TestCase):
 class PdfAndArtifactTests(unittest.TestCase):
     def test_pdf_metadata_contract_accepts_expected_values(self):
         metadata = audit.parse_pdfinfo(
-            "Pages: 5\nTagged: yes\nEncrypted: no\nJavaScript: no\nPage size: 420 x 720 pts\n"
+            "Pages: 5\nTagged: yes\nEncrypted: no\nJavaScript: no\nForm: none\nPage size: 420 x 720 pts\n"
         )
         findings = audit.pdf_metadata_findings(
             Path("phone.pdf"), metadata, expected_size="420 x 720 pts"
@@ -171,13 +194,13 @@ class PdfAndArtifactTests(unittest.TestCase):
 
     def test_pdf_metadata_contract_rejects_active_or_wrong_document(self):
         metadata = audit.parse_pdfinfo(
-            "Pages: 4\nTagged: no\nEncrypted: yes\nJavaScript: yes\nPage size: 420 x 720 pts\n"
+            "Pages: 4\nTagged: no\nEncrypted: yes\nJavaScript: yes\nForm: AcroForm\nPage size: 420 x 720 pts\n"
         )
         findings = audit.pdf_metadata_findings(
             Path("phone.pdf"), metadata, expected_size="420 x 720 pts"
         )
         self.assertEqual(
-            {"PDF pages", "PDF tagging", "PDF encryption", "PDF JavaScript"},
+            {"PDF pages", "PDF tagging", "PDF encryption", "PDF JavaScript", "PDF forms"},
             {finding.category for finding in findings},
         )
 

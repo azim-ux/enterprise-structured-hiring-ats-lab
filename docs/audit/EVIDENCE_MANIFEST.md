@@ -41,6 +41,57 @@ Stage 1B adds [`scripts/data_contracts.py`](../../scripts/data_contracts.py) as 
 
 Test-first evidence was captured in two red cycles: the focused suite first failed to import the intentionally absent validator, then three added mutations failed for temporal, per-requisition cohort, and displayed-KPI rules before those checks were implemented. The completed branch runs 92 tests with zero skips. Standard-library line tracing reports 95.4% for the new validator, 92% for the repository auditor, and 92% for the hosted-provenance module.
 
+## Stage 1C truthful PDF-artifact evidence
+
+The untouched Stage 1B baseline passed 92 tests and the complete 47-file audit. Before regeneration, both PDFs had five pages, extractable text, tagging, no encryption, no JavaScript, and their intended dimensions. The earlier desktop PDF was 374,276 bytes with SHA-256 `40d08a823387f81e35a36aac07b10c6cae3ac2940a014d8570bb31f0394b5c14`; the earlier phone PDF was 408,388 bytes with SHA-256 `11fae9a47a056a2ccd5b6dda97535935237e042cea86e114ade78d91da08cc86`.
+
+The initial test-first claims cycle produced two expected failures against the unchanged source HTML and extracted PDF text. It detected affirmative wording that implied an enterprise runtime, operational knockout and erasure, implemented demographic isolation, and active role permissions. A later focused red cycle proved that a qualified mention could not be allowed to hide a second affirmative claim and that only two exact, metadata-free visual-evidence PNG paths may be tracked.
+
+The revised sources qualify modeled results, design proposals, and absent controls in context. The full reasoning is recorded in the [claim-evidence matrix](CLAIM_EVIDENCE_MATRIX.md). The source-to-output contract is:
+
+| Source | Generated output | Pages | Page size |
+|---|---|---:|---:|
+| `slides.html` | `Structured_Hiring_and_ATS_Architecture_Case_Study.pdf` | 5 | 960 × 540 points |
+| `mobile-case-study.html` + `mobile-case-study.css` | `Structured_Hiring_and_ATS_Architecture_Mobile_Case_Study.pdf` | 5 | 420 × 720 points |
+
+Regeneration is automated and local; the generated PDFs are not manually edited:
+
+```bash
+python3 scripts/regenerate_pdfs.py
+```
+
+The command uses local Chrome or Chromium, disables background networking, suppresses browser print headers/footers, and replaces only browser-generated creation and modification dates with a fixed neutral timestamp. Two consecutive runs at the recorded tool versions produced the same final SHA-256 values.
+
+| PDF check | Desktop | Phone |
+|---|---|---|
+| Final SHA-256 | `6a90cc75ef1d4a4ba334a76b50bb12250c2201384eaf6fc97d90bc93c9a47586` | `d9c875aba042fc56da6feaf8aa33c5938d22505b28632718cf73851c080c4824` |
+| File size | 331,895 bytes | 459,050 bytes |
+| Searchable text | Present | Present |
+| Tagged / encrypted | Yes / no | Yes / no |
+| JavaScript / forms | No / none | No / none |
+| Embedded files | 0 | 0 |
+| External URL annotations | 0 | 2 intended links on page 5 |
+| Local paths or private identifiers in text/metadata | None detected | None detected |
+
+All ten final pages were rendered with Poppler and inspected individually. The redesigned desktop pages were checked at both 144 and 200 DPI. The two optimized contact sheets are included as governed evidence: [desktop pages 1–5](visual/desktop-final-pages.png) and [phone pages 1–5 at a 390-pixel-wide simulation](visual/mobile-final-pages.png).
+
+| Page | Visual inspection result |
+|---|---|
+| Desktop 1 | Balanced 60-point opening, four-column evidence strip, and prominent synthetic/not-production boundary; no clipping or broken glyphs observed. |
+| Desktop 2 | Connected six-stage pathway and three-row control register distinguish proposed, modeled, and tested states without repeated cards. |
+| Desktop 3 | 22-point formula and aligned 4.60 / 3.92 / +0.68 comparison make the governed-score conclusion explicit. |
+| Desktop 4 | Counts, modeled rates, 0.87 equation, and four qualified governance conclusions remain complete and visually separated. |
+| Desktop 5 | Five-metric typographic scorecard, three-step review sequence, and operational-use warning form one conclusive composition. |
+| Phone 1 | Use boundary and modeled KPI labels are visible without horizontal scrolling. |
+| Phone 2 | Header and all five architecture steps are complete after print pagination correction. |
+| Phone 3 | Six evidence cards and interpretation qualification remain legible. |
+| Phone 4 | Full header, six control statements, limitation language, and footer are visible after targeted print-only spacing. |
+| Phone 5 | Four decision cards, research qualification, and two intended links remain complete. |
+
+The phone pages were also resampled to a representative 390-pixel width and reviewed at normal fit-to-width. They require no horizontal scrolling; page 4 remains deliberately denser than the other pages but its qualification text is legible. This is a visual observation, not accessibility-conformance evidence.
+
+The completed local suite runs 107 tests with zero failures and zero skips. Full-suite standard-library tracing reports 100.0% for the claims policy, 92.1% for PDF regeneration, 91.2% for the repository auditor, 95.4% for the unchanged data-contract validator, 92.9% for hosted provenance, and 93.8% across all five first-party script modules.
+
 ## Tool record
 
 | Tool | Version used for Stage 0 |
@@ -51,7 +102,7 @@ Test-first evidence was captured in two red cycles: the focused suite first fail
 | shasum | 6.02 |
 | Poppler `pdftotext` / `pdfinfo` | 26.04.0 |
 | GitHub CLI | 2.97.0 |
-| Browser | HeadlessChrome 151.0.7922.34 via the local browser wrapper |
+| Browser | Google Chrome 151.0.7922.109 / HeadlessChrome 151 |
 
 ## Stage 0 evidence index
 
@@ -89,6 +140,15 @@ Test-first evidence was captured in two red cycles: the focused suite first fail
 | E30 | Complete data contracts | Standard-library unittest | 92 passed; zero failures and zero skips |
 | E31 | Data-contract coverage | Module-filtered standard-library line tracing | Data contracts 95.4%; repository audit 92%; provenance 92% |
 | E32 | Source artifact immutability | Git diff and governed SHA-256 audit | CSV, dashboard, slide, PDF, dependency, workflow, and public route content unchanged |
+| E33 | Stage 1C baseline | Unittest and repository audit before source edits | 92 passed, zero skips; 47 tracked files passed |
+| E34 | Claims red cycle | Source HTML and extracted-PDF assertions | Two expected failures on unsupported wording before correction |
+| E35 | Contextual claims policy | Positive qualification and negative mutation tests | Every match is evaluated; rule identifiers only; current HTML and PDF text pass |
+| E36 | Deterministic PDF regeneration | Two consecutive local builds and SHA-256 comparison | Both output hashes repeated exactly |
+| E37 | PDF structure and privacy | `pdfinfo`, `pdftotext`, `pdfdetach`, URL inventory, and repository audit | Five pages each; intended sizes; no encryption, JavaScript, forms, embedded files, private paths, or unsupported governed claims detected |
+| E38 | Ten-page visual review | 144-DPI page renders plus 390-pixel phone simulation | All ten pages inspected; no clipping, overlap, missing glyphs, or horizontal overflow observed after targeted fixes |
+| E39 | Visual-evidence governance | Exact path, SHA-256, size, dimensions, metadata-chunk, and privacy review | Two optimized contact sheets; full-resolution page renders remain untracked |
+| E40 | Stage 1C complete local gate | Full unittest, audit, whitespace, workflow, and trace runs | 113 passed, zero skips; 54 tracked files passed; 93.8% aggregate first-party script coverage |
+| E41 | Desktop editorial-design gate | CSS print tokens, contrast calculation, Poppler text bounds, 144/200-DPI render review, and four responsive browser viewports | 12-point visible-text floor; all print text colors at 6.19:1 or higher; no horizontal overflow or console errors; mobile PDF byte-identical |
 
 The current executable audit covers E02–E16 and E21 where the claims are deterministic repository properties. Browser observations E17–E20 remain Stage 0 baselines for the later responsive/accessibility workstream. E22 is point-in-time evidence and is not a continuous advisory service.
 
@@ -98,14 +158,16 @@ The current executable audit covers E02–E16 and E21 where the claims are deter
 |---|---|
 | `index.html` | `51765b742caae8ea61c7bb465e01762e9fe987e6ee308d61e11f79ccad9bbbad` |
 | `dashboard.html` | `51765b742caae8ea61c7bb465e01762e9fe987e6ee308d61e11f79ccad9bbbad` |
-| `slides.html` | `326576edb7ec8e3175996872e55334805ff9f6b595baa87018ec8610fcd8b3d0` |
-| `mobile-case-study.html` | `7227193f0b35f0d891756d7ec3d773f5a30b6d5602fbd19be2cfeaf47e0da746` |
-| `mobile-case-study.css` | `df7636f62b9275ac70a3a583bb2383f39b4ac6a6760a2834a321739e53d59034` |
+| `slides.html` | `c7cad18ca4dc9f49e052902cc49fb1baccb8098f90c7fc32ede8444e3a91a978` |
+| `mobile-case-study.html` | `b58d8cd5ab743bacbf93d166e163e8b2d6a66764ad5bbf2807d39919c9c64c31` |
+| `mobile-case-study.css` | `96ef26afcc038f329efb46b0395b7db299c83712cc9ff7e054f6d7a768316872` |
 | `synthetic_requisitions.csv` | `a5857a0bd2fb824288406611f0afd929f428c40ebe143c1f982e25ed79d20bab` |
 | `synthetic_candidates.csv` | `2e9cb4153172b7cf83349b8f49498a8598c621c81c5cfe14441a3fd6fbb57359` |
 | `synthetic_interviews.csv` | `07857ea73dbde578b5ead86b16536a967c9193a113b3e0387ee454b0ebb83a36` |
-| `Structured_Hiring_and_ATS_Architecture_Case_Study.pdf` | `40d08a823387f81e35a36aac07b10c6cae3ac2940a014d8570bb31f0394b5c14` |
-| `Structured_Hiring_and_ATS_Architecture_Mobile_Case_Study.pdf` | `11fae9a47a056a2ccd5b6dda97535935237e042cea86e114ade78d91da08cc86` |
+| `Structured_Hiring_and_ATS_Architecture_Case_Study.pdf` | `6a90cc75ef1d4a4ba334a76b50bb12250c2201384eaf6fc97d90bc93c9a47586` |
+| `Structured_Hiring_and_ATS_Architecture_Mobile_Case_Study.pdf` | `d9c875aba042fc56da6feaf8aa33c5938d22505b28632718cf73851c080c4824` |
+| `docs/audit/visual/desktop-final-pages.png` | `0071bb1876852f3617d01b8dbf0236b050deb296ad10cfd63fca497814272d79` |
+| `docs/audit/visual/mobile-final-pages.png` | `4ac1764391146fe31ab4e0b9aa3bec376a72c1b4c40cd5271f94733725934109` |
 | `vendor/chart.umd.min.js` | `206b6e8bb00fc7bba2c7ee80ca41db3e9e05ba7be0aa35abeba9cfd5357f5d0e` |
 
 ## Evidence boundary

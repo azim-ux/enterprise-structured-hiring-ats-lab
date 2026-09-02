@@ -286,11 +286,20 @@ h3 {
     height: 254mm;
     min-height: 254mm;
     margin: 0;
-    page-break-after: always;
-    break-after: page;
+    page-break-before: always;
+    break-before: page;
     box-shadow: none;
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
   }
-  .page:last-child { page-break-after: auto; break-after: auto; }
+  .page:first-of-type { page-break-before: auto; break-before: auto; }
+  .page:nth-of-type(2) h2,
+  .page:nth-of-type(4) h2 { margin: 4mm 0 3mm; font-size: 21pt; }
+  .page:nth-of-type(2) .flow { gap: 2mm; margin-top: 3mm; }
+  .page:nth-of-type(2) .flow li { padding: 3mm; }
+  .page:nth-of-type(2) .flow p { font-size: 9.5pt; line-height: 1.35; }
+  .page:nth-of-type(4) .compact-list { margin-top: 2mm; font-size: 10pt; line-height: 1.35; }
+  .page:nth-of-type(4) .compact-list li { margin-bottom: 1.7mm; }
+  .page:nth-of-type(4) .callout { margin-top: 3mm; padding: 3mm 4mm; font-size: 10pt; }
+  .page:nth-of-type(4) { padding-top: 17mm; }
 }

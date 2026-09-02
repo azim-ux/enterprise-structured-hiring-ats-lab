@@ -51,9 +51,13 @@ Every one of 500 scored candidates has four events: Work Sample Review, Structur
 
 A deterministic permutation rule distributes 164 late records through the sequence: an evaluation is late when `(event sequence × 37) mod 2,000 < 164`. Late turnaround is 49–72 hours; all other events are 12–48 hours. This produces exactly 1,836 on-time events and 164 late events, or 91.8% adherence.
 
-### 6. Reconcile and publish
+### 6. Reconcile, qualify claims, and publish
 
-The current 92-test suite and executable repository audit verify required assets, governed artifact hashes, PDF text and metadata contracts, tracked-file policy, privacy and high-confidence secret patterns, relative Markdown and HTML links, self-hosted executable scripts, exact schemas and nullability, IDs and foreign keys, enumerations and stage progression, all 500 composite calculations, per-requisition and cohort totals, SLA boundaries, governed KPIs, both dashboard JSON payloads, the halo control, five-slide structure, deterministic pagination rules, history identity privacy, workflow pins, and GitHub platform-merge provenance behavior. Both dashboard files must preserve every normalized CSV field and value; drift fails the `data` gate.
+The current 113-test suite and executable repository audit verify required assets, governed artifact hashes, PDF text and metadata contracts, desktop print typography and contrast, contextual capability claims, reviewed contact-sheet policy, tracked-file privacy, relative Markdown and HTML links, self-hosted executable scripts, exact schemas and nullability, IDs and foreign keys, enumerations and stage progression, all 500 composite calculations, per-requisition and cohort totals, SLA boundaries, governed KPIs, both dashboard JSON payloads, the halo control, five-slide structure, deterministic pagination rules, history identity privacy, workflow pins, and GitHub platform-merge provenance behavior. Both dashboard files must preserve every normalized CSV field and value; drift fails the `data` gate.
+
+The public case-study sources distinguish implemented calculations and tests from modeled outcomes and proposed controls. A contextual claims policy rejects affirmative assertions of unimplemented production, access-control, erasure, compliance, fairness, predictive-validity, and accessibility capabilities while allowing clearly labelled design requirements and limitations. This is a regression guard for governed wording, not a comprehensive natural-language verifier.
+
+The PDF build uses local Chrome or Chromium with background networking disabled. `slides.html` maps to the 960 × 540 point desktop PDF; `mobile-case-study.html` plus `mobile-case-study.css` maps to the 420 × 720 point phone PDF. Browser-generated creation and modification dates are normalized to a fixed neutral value, so repeated builds with the same browser and inputs are byte-stable. Toolchain upgrades can legitimately change PDF bytes and require a new reviewed hash update.
 
 ## Statistical assumptions
 
@@ -98,6 +102,10 @@ DPDP, GDPR, and EEOC sources are governance benchmarks. Applicability varies by 
 ### Browser delivery
 
 The source data and application logic are embedded. Chart.js 4.4.7 is pinned and self-hosted in `vendor/`; no Tailwind runtime is present, and the dashboard does not request externally hosted executable scripts. Very large inline JSON increases file size and parse cost. The public browser receives the complete synthetic dataset, including cohort fields, even though individual decision views do not display those fields. UI hiding is not access control. Any later API-backed reference implementation would require authenticated server-side pagination and field projection, and this static architecture must never be used with real applicant data.
+
+### PDF and claims boundary
+
+The five-page exports are readable portfolio documents, not conformance reports. Tagging and searchable text do not establish a correct semantic tag tree, assistive-technology usability, or accessibility conformance. The visual review checks visible layout at the recorded render resolution and a 390-pixel-wide phone simulation; it is not device-lab coverage. The claims gate recognizes governed patterns and contextual qualifiers but cannot prove every future sentence is true.
 
 ## Ethical boundaries
 
