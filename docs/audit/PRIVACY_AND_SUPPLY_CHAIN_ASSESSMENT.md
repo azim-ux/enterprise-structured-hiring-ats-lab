@@ -4,7 +4,7 @@
 
 ### Verified public boundary
 
-- The audited baseline history contains one commit authored with the repository owner’s GitHub noreply identity. The corrected PR branch contains three reachable commits after the correction commit, all using that noreply identity.
+- Reachable human-authored commits are checked for user-specific GitHub noreply identities. GitHub platform-committed merges are classified separately and require hosted actor, signature, parent, and merged-PR provenance.
 - An exact-index scan covered all 28 baseline files and all 38 corrected PR-branch files, including extracted PDF text and metadata.
 - No personal phone number, Aadhaar, PAN, passport, Emirates ID, private email, credential, secret key, macOS home-directory path, hidden artifact, or broken internal link was detected.
 - Candidate names follow the synthetic pattern `Synthetic Candidate ####`; APD is explicitly fictional.
@@ -21,7 +21,7 @@ Both dashboard files deliver all 4,000 candidate rows, including demographic coh
 - No runtime authentication, authorization, consent, retention, deletion, encryption-at-rest, audit logging, or incident workflow exists.
 - The checked-in privacy test omits several identifiers and file formats and is sensitive to ignored local tooling artifacts.
 - No data classification file or machine-enforced “synthetic only” schema marker exists.
-- No automated history/commit-author scan runs in CI.
+- Hosted provenance depends on GitHub API availability and reports; it fails closed but cannot independently prove a contributor's real-world identity.
 - GitHub secret scanning and push protection are enabled, but non-provider patterns and validity checks are disabled; repository settings were observed only and were not changed.
 
 ## Dependency and supply chain
