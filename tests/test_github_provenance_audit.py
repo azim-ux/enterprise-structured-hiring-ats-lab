@@ -3,6 +3,8 @@ import tempfile
 import unittest
 from contextlib import redirect_stderr
 from pathlib import Path
+from unittest.mock import patch
+from urllib.error import URLError
 
 from scripts import github_provenance_audit as provenance
 from scripts import repository_audit as audit
@@ -63,7 +65,35 @@ class FakeApi:
         return self.pulls if path.endswith("/pulls") else self.commit
 
 
+class FakeResponse:
+    def __init__(self, payload):
+        self.payload = payload
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *_args):
+        return False
+
+    def read(self):
+        return self.payload
+
+
 class PlatformProvenanceTests(unittest.TestCase):
+    @patch("scripts.github_provenance_audit.urlopen")
+    def test_api_client_parses_json_without_logging_response(self, opener):
+        opener.return_value = FakeResponse(b'{"synthetic": true}')
+        client = provenance.GitHubApiClient(token="synthetic-token")
+        self.assertEqual({"synthetic": True}, client.get("/synthetic"))
+        request = opener.call_args.args[0]
+        self.assertTrue(request.has_header("Authorization"))
+
+    @patch("scripts.github_provenance_audit.urlopen", side_effect=URLError("offline"))
+    def test_api_client_normalizes_transport_failure(self, _opener):
+        with self.assertRaises(provenance.ProvenanceUnavailable) as raised:
+            provenance.GitHubApiClient().get("/synthetic")
+        self.assertEqual("remote evidence unavailable", str(raised.exception))
+
     def test_sanitized_pr15_merge_shape_passes(self):
         api = FakeApi()
         findings = provenance.platform_provenance_findings(
@@ -79,6 +109,18 @@ class PlatformProvenanceTests(unittest.TestCase):
             [merge_record()], REPOSITORY, api
         )
         self.assertIn("platform provenance actor", {item.category for item in findings})
+
+    def test_mismatched_commit_response_fails_before_pr_lookup(self):
+        metadata = commit_metadata()
+        metadata["sha"] = "f" * 40
+        api = FakeApi(commit=metadata)
+        findings = provenance.platform_provenance_findings(
+            [merge_record()], REPOSITORY, api
+        )
+        self.assertEqual(
+            ["platform provenance response"], [item.category for item in findings]
+        )
+        self.assertEqual(1, len(api.paths))
 
     def test_missing_invalid_or_unverifiable_signature_fails(self):
         cases = (
@@ -181,6 +223,17 @@ class PlatformProvenanceTests(unittest.TestCase):
             )
         self.assertEqual(1, result)
         self.assertEqual("FAIL platform provenance: local history unavailable\n", stderr.getvalue())
+
+    @patch("scripts.github_provenance_audit.GitHubApiClient")
+    @patch("scripts.github_provenance_audit.audit.history_identity_records")
+    def test_cli_success_reports_count_only(self, records, client):
+        records.return_value = [merge_record()]
+        client.return_value = FakeApi()
+        stdout = io.StringIO()
+        with patch("sys.stdout", stdout):
+            result = provenance.main(["--repository", REPOSITORY])
+        self.assertEqual(0, result)
+        self.assertEqual("PASS platform provenance: 1 verified merge commit(s)\n", stdout.getvalue())
 
 
 if __name__ == "__main__":
