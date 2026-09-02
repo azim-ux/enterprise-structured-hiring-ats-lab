@@ -278,5 +278,20 @@ class CommandLineTests(unittest.TestCase):
             self.assertNotIn(credential, stderr.getvalue())
 
 
+class WorkflowContractTests(unittest.TestCase):
+    def test_official_actions_use_verified_node24_release_commits(self):
+        workflow = (ROOT / ".github/workflows/quality-gates.yml").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn(
+            "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1",
+            workflow,
+        )
+        self.assertIn(
+            "actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0",
+            workflow,
+        )
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

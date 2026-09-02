@@ -85,7 +85,7 @@ The 4/5ths result is a monitoring signal rather than proof of fairness or lawful
    python3 scripts/repository_audit.py --all
    ```
 
-The 29-test suite and executable audit verify tracked-file policy, privacy and high-confidence secret patterns, relative links, external executable scripts, PDF text and metadata, governed artifact hashes, all 500 composite calculations, core KPI reconciliation, and commit identities. See [Repository Quality Gates](QUALITY_GATES.md) for prerequisites, individual checks, CI behavior, the narrow legacy-history exception, and limitations.
+The 30-test suite and executable audit verify tracked-file policy, privacy and high-confidence secret patterns, relative links, external executable scripts, PDF text and metadata, governed artifact hashes, all 500 composite calculations, core KPI reconciliation, workflow pins, and commit identities. See [Repository Quality Gates](QUALITY_GATES.md) for prerequisites, individual checks, CI behavior, the narrow legacy-history exception, and limitations.
 
 Full schemas and foreign keys, embedded JSON/CSV parity, browser interaction, responsive/accessibility behavior, and the five-slide content contract remain outside this stage. Those gaps are tracked in the [Stage 0 test-coverage map](docs/audit/TEST_COVERAGE_MAP.md) and the linked Stage 1 issues.
 
