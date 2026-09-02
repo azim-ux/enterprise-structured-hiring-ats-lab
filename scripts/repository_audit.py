@@ -2,16 +2,19 @@
 """Executable repository audit gates for the synthetic hiring reference project."""
 
 import argparse
-import csv
 import hashlib
 import re
 import subprocess
 import sys
 from dataclasses import dataclass
-from decimal import Decimal, ROUND_HALF_UP
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
+
+try:
+    from scripts import data_contracts
+except ModuleNotFoundError:  # Direct execution places scripts/ on sys.path.
+    import data_contracts
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -356,63 +359,14 @@ def artifact_hash_findings(root=ROOT, expected=None):
     return findings
 
 
-def _csv_rows(root, relative):
-    with (Path(root) / relative).open(newline="", encoding="utf-8") as handle:
-        return list(csv.DictReader(handle))
-
-
 def data_kpi_findings(root=ROOT):
-    try:
-        requisitions = _csv_rows(root, "synthetic_requisitions.csv")
-        candidates = _csv_rows(root, "synthetic_candidates.csv")
-        interviews = _csv_rows(root, "synthetic_interviews.csv")
-        composite_errors = 0
-        for row in candidates:
-            if not row["Composite_Score"]:
-                continue
-            expected = (
-                Decimal(row["Work_Sample_Score"]) * Decimal("0.40")
-                + Decimal(row["Structured_Interview_Score"]) * Decimal("0.40")
-                + Decimal(row["Job_Knowledge_Score"]) * Decimal("0.20")
-            ).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
-            composite_errors += Decimal(row["Composite_Score"]) != expected
-        reference = [
-            row for row in candidates if row["Demographic_Cohort"] == "Reference Group"
-        ]
-        focal = [row for row in candidates if row["Demographic_Cohort"] == "Focal Group"]
-        reference_rate = Decimal(
-            sum(bool(row["Phone_Screen_Score"]) for row in reference)
-        ) / len(reference)
-        focal_rate = Decimal(sum(bool(row["Phone_Screen_Score"]) for row in focal)) / len(
-            focal
+    return [
+        Finding(
+            f"data {item.category}",
+            f"{item.record_key}:{item.field}",
         )
-        result = {
-            "requisitions": len(requisitions),
-            "candidates": len(candidates),
-            "interviews": len(interviews),
-            "composites_checked": sum(bool(row["Composite_Score"]) for row in candidates),
-            "composite_errors": composite_errors,
-            "hires": sum(row["Current_Stage"] == "Hired" for row in candidates),
-            "mean_days_to_fill": str(
-                sum(Decimal(row["Days_to_Fill"]) for row in requisitions) / len(requisitions)
-            ),
-            "sla_met": sum(row["SLA_Met"] == "Yes" for row in interviews),
-            "air": str((focal_rate / reference_rate).quantize(Decimal("0.01"))),
-        }
-    except (OSError, KeyError, ArithmeticError, csv.Error, ValueError):
-        return [Finding("data reconciliation", "synthetic CSV files")]
-    expected = {
-        "requisitions": 5,
-        "candidates": 4000,
-        "interviews": 2000,
-        "composites_checked": 500,
-        "composite_errors": 0,
-        "hires": 120,
-        "mean_days_to_fill": "28.5",
-        "sla_met": 1836,
-        "air": "0.87",
-    }
-    return [] if result == expected else [Finding("data reconciliation", "synthetic CSV files")]
+        for item in data_contracts.validate_repository(root)
+    ]
 
 
 def is_user_noreply_identity(value):

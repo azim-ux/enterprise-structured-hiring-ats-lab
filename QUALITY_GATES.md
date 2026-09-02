@@ -48,7 +48,7 @@ python3 -m trace --count --missing --summary --coverdir ../repository-audit-cove
 | Executable scripts | HTML does not load executable JavaScript from an external host. |
 | PDFs | Exactly two governed PDFs exist; each has extractable text, five pages, tagging, no encryption, no JavaScript, and its expected page size. |
 | Artifacts | Governed HTML, data, PDF, CSS, and Chart.js files match recorded SHA-256 values; the Chart.js 4.4.7 marker is present. |
-| Data | Row counts, all 500 composite calculations, hires, time to fill, SLA rows, and adverse-impact ratio reconcile to the governed values. |
+| Data | Exact schemas, field rules, IDs, foreign keys, enumerations, stage and date consistency, all 500 composites and bias gaps, per-requisition and cohort totals, SLA classification, governed KPI displays, both embedded JSON payloads, the halo control, five-slide structure, and pagination source/model contracts reconcile. |
 | History privacy | A human author must use a user-specific GitHub noreply identity. A committer must use that form too, except that the exact GitHub generic platform service identity is allowed only on a two-parent merge commit. Arbitrary GitHub-domain identities and the platform identity as author are rejected. |
 | Hosted provenance | Every reachable commit using the platform service committer must be attributed by GitHub to the exact `web-flow` actor, have a verified signature with a valid reason, have exactly two parents, and be associated with a merged pull request. |
 
@@ -64,6 +64,8 @@ Privacy classification and provenance are separate controls:
 The policy never allowlists every address from a broad domain. Such a rule would admit arbitrary or attacker-chosen identities that merely look GitHub-related. The platform service identity is also never valid as a human author.
 
 Both CLIs fail with category-only diagnostics and an abbreviated commit identifier. They do not echo identity values, matched secrets, API response bodies, exception strings, or tokens. Tests use constructed synthetic values and sanitized API metadata without address fields.
+
+The Stage 1B validator is [`scripts/data_contracts.py`](scripts/data_contracts.py). It is dependency-free, is called through the existing `data` check, and emits only a finding category, synthetic record key, and field name. Its mutation tests never write to the governed CSV, dashboard, slide, or PDF artifacts.
 
 ## CI design
 
