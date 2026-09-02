@@ -78,9 +78,16 @@ The 4/5ths result is a monitoring signal rather than proof of fairness or lawful
 1. Clone or download this repository.
 2. Open `index.html`, `dashboard.html`, or `slides.html` in a modern browser.
 3. Inspect the three CSV files for row-level evidence.
-4. Run `python3 -m unittest tests/test_repository_integrity.py` from the repository root.
+4. Install the documented PDF tooling and run the complete local quality gate:
 
-The four-test acceptance suite checks ten required assets, selected row counts and governed KPI values, a limited set of privacy/secret/local-path patterns in non-PDF files, and relative `href`/`src` targets in top-level HTML files. It does not currently verify the exact inventory, full schemas and foreign keys, every composite calculation, embedded JSON/CSV parity, browser behavior, PDF contents, or the five-slide contract; those gaps are tracked in the [Stage 0 test-coverage map](docs/audit/TEST_COVERAGE_MAP.md).
+   ```bash
+   python3 -m unittest discover -s tests -v
+   python3 scripts/repository_audit.py --all
+   ```
+
+The 29-test suite and executable audit verify tracked-file policy, privacy and high-confidence secret patterns, relative links, external executable scripts, PDF text and metadata, governed artifact hashes, all 500 composite calculations, core KPI reconciliation, and commit identities. See [Repository Quality Gates](QUALITY_GATES.md) for prerequisites, individual checks, CI behavior, the narrow legacy-history exception, and limitations.
+
+Full schemas and foreign keys, embedded JSON/CSV parity, browser interaction, responsive/accessibility behavior, and the five-slide content contract remain outside this stage. Those gaps are tracked in the [Stage 0 test-coverage map](docs/audit/TEST_COVERAGE_MAP.md) and the linked Stage 1 issues.
 
 ## Interpretation boundary
 
