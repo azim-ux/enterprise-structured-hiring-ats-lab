@@ -1,6 +1,8 @@
 import io
+import tempfile
 import unittest
 from contextlib import redirect_stderr
+from pathlib import Path
 
 from scripts import github_provenance_audit as provenance
 from scripts import repository_audit as audit
@@ -83,6 +85,7 @@ class PlatformProvenanceTests(unittest.TestCase):
             commit_metadata(verified=False),
             commit_metadata(reason="unknown"),
             {"sha": MERGE_SHA, "committer": {"login": "web-flow"}, "commit": {}, "parents": [{}, {}]},
+            {"sha": MERGE_SHA, "committer": {"login": "web-flow"}, "commit": None, "parents": [{}, {}]},
         )
         for metadata in cases:
             with self.subTest(metadata=metadata):
@@ -101,6 +104,16 @@ class PlatformProvenanceTests(unittest.TestCase):
         self.assertIn(
             "platform provenance parents", {item.category for item in findings}
         )
+
+    def test_local_single_parent_shape_fails_before_remote_lookup(self):
+        api = FakeApi()
+        findings = provenance.platform_provenance_findings(
+            [merge_record(parents=("a",))], REPOSITORY, api
+        )
+        self.assertEqual(
+            ["platform provenance parents"], [item.category for item in findings]
+        )
+        self.assertEqual([], api.paths)
 
     def test_unmerged_unassociated_or_mismatched_pr_fails(self):
         cases = (
@@ -159,6 +172,15 @@ class PlatformProvenanceTests(unittest.TestCase):
             result = provenance.main(["--repository", "invalid"])
         self.assertEqual(1, result)
         self.assertEqual("FAIL platform provenance: invalid repository context\n", stderr.getvalue())
+
+    def test_cli_fails_closed_when_local_history_is_unavailable(self):
+        stderr = io.StringIO()
+        with tempfile.TemporaryDirectory() as temp, redirect_stderr(stderr):
+            result = provenance.main(
+                ["--repository", REPOSITORY, "--root", str(Path(temp))]
+            )
+        self.assertEqual(1, result)
+        self.assertEqual("FAIL platform provenance: local history unavailable\n", stderr.getvalue())
 
 
 if __name__ == "__main__":

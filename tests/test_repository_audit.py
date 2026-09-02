@@ -368,6 +368,7 @@ class WorkflowContractTests(unittest.TestCase):
         )
         self.assertIn("contents: read", workflow)
         self.assertIn("pull-requests: read", workflow)
+        self.assertIn("github-platform-provenance:", workflow)
         self.assertIn("Run GitHub merge provenance audit", workflow)
         self.assertIn("if: github.event_name == 'push'", workflow)
         self.assertIn("python3 scripts/github_provenance_audit.py", workflow)
