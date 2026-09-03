@@ -24,8 +24,8 @@ All people, identifiers, dates, scores, and events are fictional. Demographic co
 - [Open the high-volume analytics dashboard](dashboard.html)
 - [Open the five-slide case presentation](slides.html)
 - [Download the five-page PDF case study](Structured_Hiring_and_ATS_Architecture_Case_Study.pdf)
-- [Open the responsive phone case-study source](mobile-case-study.html)
-- [Read the five-page phone-friendly portrait edition](Structured_Hiring_and_ATS_Architecture_Mobile_Case_Study.pdf)
+- [Open the responsive LinkedIn case-study source](mobile-case-study.html)
+- [Read the five-page LinkedIn-ready portrait edition](Structured_Hiring_and_ATS_Architecture_Mobile_Case_Study.pdf)
 
 Both dashboard pages embed all three source datasets as JSON. Search, filtering, 25/50-row pagination, charts, and scorecards run directly from the local file. Chart.js 4.4.7 is pinned and self-hosted in `vendor/`, so page rendering does not depend on a third-party JavaScript request.
 
@@ -86,7 +86,7 @@ The 4/5ths result is a monitoring signal rather than proof of fairness or lawful
    python3 scripts/repository_audit.py --all
    ```
 
-The 107-test suite and executable audit verify tracked-file policy, privacy and high-confidence secret patterns, relative links, external executable scripts, contextual capability claims, PDF text and metadata, governed artifact and visual-evidence hashes, complete CSV contracts, every 40/40/20 composite, cohort and requisition reconciliation, both embedded dashboard payloads, the halo-control record, the five-slide structure, deterministic pagination rules, workflow pins, history privacy, redacted failure behavior, and positive and negative GitHub merge-provenance cases. A separate push-to-main CI job verifies platform-generated merge commits against GitHub's actor, signature, parent, and merged-PR evidence. See [Repository Quality Gates](QUALITY_GATES.md), the [claim-evidence matrix](docs/audit/CLAIM_EVIDENCE_MATRIX.md), and the [identity privacy and provenance method](docs/audit/IDENTITY_PRIVACY_AND_PROVENANCE_METHOD.md) for the control boundary and limitations.
+The 119-test suite and executable audit verify tracked-file policy, privacy and high-confidence secret patterns, relative links, external executable scripts, contextual capability claims, PDF text and metadata, governed artifact and visual-evidence hashes, complete CSV contracts, every 40/40/20 composite, cohort and requisition reconciliation, both embedded dashboard payloads, the halo-control record, the five-slide structure, the LinkedIn-oriented mobile narrative and print design, deterministic pagination rules, workflow pins, history privacy, redacted failure behavior, and positive and negative GitHub merge-provenance cases. A separate push-to-main CI job verifies platform-generated merge commits against GitHub's actor, signature, parent, and merged-PR evidence. See [Repository Quality Gates](QUALITY_GATES.md), the [claim-evidence matrix](docs/audit/CLAIM_EVIDENCE_MATRIX.md), and the [identity privacy and provenance method](docs/audit/IDENTITY_PRIVACY_AND_PROVENANCE_METHOD.md) for the control boundary and limitations.
 
 The two PDFs are generated from `slides.html` and `mobile-case-study.html` with local Chrome or Chromium. The build blocks background networking and normalizes volatile PDF dates; it does not manually alter the exported files. Both outputs remain five pages at their original 960 × 540 point desktop and 420 × 720 point phone dimensions. The final [desktop](docs/audit/visual/desktop-final-pages.png) and [phone-width](docs/audit/visual/mobile-final-pages.png) contact sheets record the page-by-page visual review without replacing the source PDFs.
 
