@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SLIDES = ROOT / "slides.html"
 DESKTOP_PDF = ROOT / "Structured_Hiring_and_ATS_Architecture_Case_Study.pdf"
 MOBILE_PDF = ROOT / "Structured_Hiring_and_ATS_Architecture_Mobile_Case_Study.pdf"
-MOBILE_SHA256 = "d9c875aba042fc56da6feaf8aa33c5938d22505b28632718cf73851c080c4824"
+MOBILE_SHA256 = "4e8b208c0f5d499c9ce2dde3c08b0e2d3cb0a0bc6c2d032818db303cd70429c1"
 
 TYPE_TARGETS = {
     "--print-cover": (54.0, 64.0),
@@ -135,7 +135,7 @@ class DesktopPrintDesignTests(unittest.TestCase):
             self.assertTrue(visible_sizes)
             self.assertGreaterEqual(min(visible_sizes), 12.0, f"page {page.attrib['number']} contains undersized text")
 
-    def test_mobile_pdf_remains_byte_identical(self):
+    def test_mobile_pdf_matches_reviewed_linkedin_artifact(self):
         self.assertEqual(MOBILE_SHA256, sha256(MOBILE_PDF))
 
 

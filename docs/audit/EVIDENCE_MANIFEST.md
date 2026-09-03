@@ -64,8 +64,8 @@ The command uses local Chrome or Chromium, disables background networking, suppr
 
 | PDF check | Desktop | Phone |
 |---|---|---|
-| Final SHA-256 | `6a90cc75ef1d4a4ba334a76b50bb12250c2201384eaf6fc97d90bc93c9a47586` | `d9c875aba042fc56da6feaf8aa33c5938d22505b28632718cf73851c080c4824` |
-| File size | 331,895 bytes | 459,050 bytes |
+| Final SHA-256 | `6a90cc75ef1d4a4ba334a76b50bb12250c2201384eaf6fc97d90bc93c9a47586` | `4e8b208c0f5d499c9ce2dde3c08b0e2d3cb0a0bc6c2d032818db303cd70429c1` |
+| File size | 331,895 bytes | 369,585 bytes |
 | Searchable text | Present | Present |
 | Tagged / encrypted | Yes / no | Yes / no |
 | JavaScript / forms | No / none | No / none |
@@ -82,15 +82,15 @@ All ten final pages were rendered with Poppler and inspected individually. The r
 | Desktop 3 | 22-point formula and aligned 4.60 / 3.92 / +0.68 comparison make the governed-score conclusion explicit. |
 | Desktop 4 | Counts, modeled rates, 0.87 equation, and four qualified governance conclusions remain complete and visually separated. |
 | Desktop 5 | Five-metric typographic scorecard, three-step review sequence, and operational-use warning form one conclusive composition. |
-| Phone 1 | Use boundary and modeled KPI labels are visible without horizontal scrolling. |
-| Phone 2 | Header and all five architecture steps are complete after print pagination correction. |
-| Phone 3 | Six evidence cards and interpretation qualification remain legible. |
-| Phone 4 | Full header, six control statements, limitation language, and footer are visible after targeted print-only spacing. |
-| Phone 5 | Four decision cards, research qualification, and two intended links remain complete. |
+| Phone 1 | Dark editorial cover makes the 4,000-application audit question, synthetic boundary, open-source status, and three scope measures immediately scannable. |
+| Phone 2 | Six connected stages distinguish proposed, modeled, and tested states while preserving the requisition-to-disposition evidence chain. |
+| Phone 3 | The 40/40/20 formula and the 4.60 / 3.92 / +0.68 halo-control comparison create one focused selection-governance argument. |
+| Phone 4 | Reference and focal counts, 0.87 impact-ratio equation, 91.8% SLA denominator, and 28.5-day measure remain visible with explicit limitations. |
+| Phone 5 | Dark closing page gives expert reviewers a three-step challenge and two intended links to the live model and GitHub source. |
 
 The phone pages were also resampled to a representative 390-pixel width and reviewed at normal fit-to-width. They require no horizontal scrolling; page 4 remains deliberately denser than the other pages but its qualification text is legible. This is a visual observation, not accessibility-conformance evidence.
 
-The completed local suite runs 107 tests with zero failures and zero skips. Full-suite standard-library tracing reports 100.0% for the claims policy, 92.1% for PDF regeneration, 91.2% for the repository auditor, 95.4% for the unchanged data-contract validator, 92.9% for hosted provenance, and 93.8% across all five first-party script modules.
+The completed local suite runs 120 tests with zero failures and zero skips. Seven mobile print-design tests govern the expert-facing narrative, editorial structures, deterministic type tokens, light-page color contrast, required extracted-PDF evidence, uninterrupted headline reading order, and page bounds. Full-suite standard-library tracing for the first-party script modules is unchanged because the correction changes static presentation sources and their generated artifact rather than Python behavior.
 
 ## Tool record
 
@@ -148,7 +148,9 @@ The completed local suite runs 107 tests with zero failures and zero skips. Full
 | E38 | Ten-page visual review | 144-DPI page renders plus 390-pixel phone simulation | All ten pages inspected; no clipping, overlap, missing glyphs, or horizontal overflow observed after targeted fixes |
 | E39 | Visual-evidence governance | Exact path, SHA-256, size, dimensions, metadata-chunk, and privacy review | Two optimized contact sheets; full-resolution page renders remain untracked |
 | E40 | Stage 1C complete local gate | Full unittest, audit, whitespace, workflow, and trace runs | 113 passed, zero skips; 54 tracked files passed; 93.8% aggregate first-party script coverage |
-| E41 | Desktop editorial-design gate | CSS print tokens, contrast calculation, Poppler text bounds, 144/200-DPI render review, and four responsive browser viewports | 12-point visible-text floor; all print text colors at 6.19:1 or higher; no horizontal overflow or console errors; mobile PDF byte-identical |
+| E41 | Desktop editorial-design gate | CSS print tokens, contrast calculation, Poppler text bounds, 144/200-DPI render review, and four responsive browser viewports | 12-point visible-text floor; all print text colors at 6.19:1 or higher; no horizontal overflow or console errors; mobile PDF remained byte-identical within the Stage 1C amendment |
+| E42 | LinkedIn mobile editorial-design gate | Test-first source assertions, deterministic print tokens, contrast calculation, Poppler text and bounds checks, two consecutive regenerations, five-page 144-DPI review, and 390-pixel contact sheet | 119 tests pass; five 420 × 720 point pages; desktop PDF unchanged; mobile PDF byte-stable; generic card/pill structures removed; two intended links retained |
+| E43 | Cross-platform mobile PDF reading order | Red-first decorative-folio regression, path-only SVG source review, Poppler extraction, deterministic regeneration, and five-page visual inspection | Decorative `01` and `05` remain visible but are absent from the PDF text stream; both cover headlines extract contiguously; masthead folios remain text |
 
 The current executable audit covers E02–E16 and E21 where the claims are deterministic repository properties. Browser observations E17–E20 remain Stage 0 baselines for the later responsive/accessibility workstream. E22 is point-in-time evidence and is not a continuous advisory service.
 
@@ -159,15 +161,15 @@ The current executable audit covers E02–E16 and E21 where the claims are deter
 | `index.html` | `51765b742caae8ea61c7bb465e01762e9fe987e6ee308d61e11f79ccad9bbbad` |
 | `dashboard.html` | `51765b742caae8ea61c7bb465e01762e9fe987e6ee308d61e11f79ccad9bbbad` |
 | `slides.html` | `c7cad18ca4dc9f49e052902cc49fb1baccb8098f90c7fc32ede8444e3a91a978` |
-| `mobile-case-study.html` | `b58d8cd5ab743bacbf93d166e163e8b2d6a66764ad5bbf2807d39919c9c64c31` |
-| `mobile-case-study.css` | `96ef26afcc038f329efb46b0395b7db299c83712cc9ff7e054f6d7a768316872` |
+| `mobile-case-study.html` | `a00de0a09d0a3d85ab538e3f60a2ad8527b736de143adcaabf0bd3e10eeb1e81` |
+| `mobile-case-study.css` | `1854f1276864d664fec588e6c0602bb06da64a63918496be80f65ceaaf7f1075` |
 | `synthetic_requisitions.csv` | `a5857a0bd2fb824288406611f0afd929f428c40ebe143c1f982e25ed79d20bab` |
 | `synthetic_candidates.csv` | `2e9cb4153172b7cf83349b8f49498a8598c621c81c5cfe14441a3fd6fbb57359` |
 | `synthetic_interviews.csv` | `07857ea73dbde578b5ead86b16536a967c9193a113b3e0387ee454b0ebb83a36` |
 | `Structured_Hiring_and_ATS_Architecture_Case_Study.pdf` | `6a90cc75ef1d4a4ba334a76b50bb12250c2201384eaf6fc97d90bc93c9a47586` |
-| `Structured_Hiring_and_ATS_Architecture_Mobile_Case_Study.pdf` | `d9c875aba042fc56da6feaf8aa33c5938d22505b28632718cf73851c080c4824` |
+| `Structured_Hiring_and_ATS_Architecture_Mobile_Case_Study.pdf` | `4e8b208c0f5d499c9ce2dde3c08b0e2d3cb0a0bc6c2d032818db303cd70429c1` |
 | `docs/audit/visual/desktop-final-pages.png` | `0071bb1876852f3617d01b8dbf0236b050deb296ad10cfd63fca497814272d79` |
-| `docs/audit/visual/mobile-final-pages.png` | `4ac1764391146fe31ab4e0b9aa3bec376a72c1b4c40cd5271f94733725934109` |
+| `docs/audit/visual/mobile-final-pages.png` | `18d08d3a7e5713e27bc0ededab12cb6088cb39f762096136016bc4ca7690b3b5` |
 | `vendor/chart.umd.min.js` | `206b6e8bb00fc7bba2c7ee80ca41db3e9e05ba7be0aa35abeba9cfd5357f5d0e` |
 
 ## Evidence boundary
