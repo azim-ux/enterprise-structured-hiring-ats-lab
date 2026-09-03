@@ -47,8 +47,8 @@ EXPECTED_PDFS = {
 }
 CLAIM_SOURCES = ("slides.html", "mobile-case-study.html")
 EXPECTED_ARTIFACT_HASHES = {
-    "index.html": "51765b742caae8ea61c7bb465e01762e9fe987e6ee308d61e11f79ccad9bbbad",
-    "dashboard.html": "51765b742caae8ea61c7bb465e01762e9fe987e6ee308d61e11f79ccad9bbbad",
+    "index.html": "c82059ef12135c792f39fadd3efa5d0ce884882e1317b8d758d1767e247a3943",
+    "dashboard.html": "c82059ef12135c792f39fadd3efa5d0ce884882e1317b8d758d1767e247a3943",
     "slides.html": "c7cad18ca4dc9f49e052902cc49fb1baccb8098f90c7fc32ede8444e3a91a978",
     "mobile-case-study.html": "a00de0a09d0a3d85ab538e3f60a2ad8527b736de143adcaabf0bd3e10eeb1e81",
     "mobile-case-study.css": "1854f1276864d664fec588e6c0602bb06da64a63918496be80f65ceaaf7f1075",
