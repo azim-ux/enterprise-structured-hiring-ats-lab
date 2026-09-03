@@ -64,8 +64,8 @@ The command uses local Chrome or Chromium, disables background networking, suppr
 
 | PDF check | Desktop | Phone |
 |---|---|---|
-| Final SHA-256 | `6a90cc75ef1d4a4ba334a76b50bb12250c2201384eaf6fc97d90bc93c9a47586` | `bf22457062981dfd348ea3c403563d2996e050772328459c55053cee78a6fbd6` |
-| File size | 331,895 bytes | 375,131 bytes |
+| Final SHA-256 | `6a90cc75ef1d4a4ba334a76b50bb12250c2201384eaf6fc97d90bc93c9a47586` | `4e8b208c0f5d499c9ce2dde3c08b0e2d3cb0a0bc6c2d032818db303cd70429c1` |
+| File size | 331,895 bytes | 369,585 bytes |
 | Searchable text | Present | Present |
 | Tagged / encrypted | Yes / no | Yes / no |
 | JavaScript / forms | No / none | No / none |
@@ -90,7 +90,7 @@ All ten final pages were rendered with Poppler and inspected individually. The r
 
 The phone pages were also resampled to a representative 390-pixel width and reviewed at normal fit-to-width. They require no horizontal scrolling; page 4 remains deliberately denser than the other pages but its qualification text is legible. This is a visual observation, not accessibility-conformance evidence.
 
-The completed local suite runs 119 tests with zero failures and zero skips. Six mobile print-design tests govern the expert-facing narrative, editorial structures, deterministic type tokens, light-page color contrast, required extracted-PDF evidence, and page bounds. Full-suite standard-library tracing for the first-party script modules is unchanged because the redesign changes static presentation sources and their generated artifact rather than Python behavior.
+The completed local suite runs 120 tests with zero failures and zero skips. Seven mobile print-design tests govern the expert-facing narrative, editorial structures, deterministic type tokens, light-page color contrast, required extracted-PDF evidence, uninterrupted headline reading order, and page bounds. Full-suite standard-library tracing for the first-party script modules is unchanged because the correction changes static presentation sources and their generated artifact rather than Python behavior.
 
 ## Tool record
 
@@ -150,6 +150,7 @@ The completed local suite runs 119 tests with zero failures and zero skips. Six 
 | E40 | Stage 1C complete local gate | Full unittest, audit, whitespace, workflow, and trace runs | 113 passed, zero skips; 54 tracked files passed; 93.8% aggregate first-party script coverage |
 | E41 | Desktop editorial-design gate | CSS print tokens, contrast calculation, Poppler text bounds, 144/200-DPI render review, and four responsive browser viewports | 12-point visible-text floor; all print text colors at 6.19:1 or higher; no horizontal overflow or console errors; mobile PDF remained byte-identical within the Stage 1C amendment |
 | E42 | LinkedIn mobile editorial-design gate | Test-first source assertions, deterministic print tokens, contrast calculation, Poppler text and bounds checks, two consecutive regenerations, five-page 144-DPI review, and 390-pixel contact sheet | 119 tests pass; five 420 × 720 point pages; desktop PDF unchanged; mobile PDF byte-stable; generic card/pill structures removed; two intended links retained |
+| E43 | Cross-platform mobile PDF reading order | Red-first decorative-folio regression, path-only SVG source review, Poppler extraction, deterministic regeneration, and five-page visual inspection | Decorative `01` and `05` remain visible but are absent from the PDF text stream; both cover headlines extract contiguously; masthead folios remain text |
 
 The current executable audit covers E02–E16 and E21 where the claims are deterministic repository properties. Browser observations E17–E20 remain Stage 0 baselines for the later responsive/accessibility workstream. E22 is point-in-time evidence and is not a continuous advisory service.
 
@@ -160,15 +161,15 @@ The current executable audit covers E02–E16 and E21 where the claims are deter
 | `index.html` | `51765b742caae8ea61c7bb465e01762e9fe987e6ee308d61e11f79ccad9bbbad` |
 | `dashboard.html` | `51765b742caae8ea61c7bb465e01762e9fe987e6ee308d61e11f79ccad9bbbad` |
 | `slides.html` | `c7cad18ca4dc9f49e052902cc49fb1baccb8098f90c7fc32ede8444e3a91a978` |
-| `mobile-case-study.html` | `4bdb3869340c0fba5e8a41016e78d0e39a4c9886b5402252ae1e6d9745ab0778` |
-| `mobile-case-study.css` | `b9abc45c1d475bfa7c2ede5d1a8ed9d2fc93926cfde93769094f99a605907c17` |
+| `mobile-case-study.html` | `a00de0a09d0a3d85ab538e3f60a2ad8527b736de143adcaabf0bd3e10eeb1e81` |
+| `mobile-case-study.css` | `1854f1276864d664fec588e6c0602bb06da64a63918496be80f65ceaaf7f1075` |
 | `synthetic_requisitions.csv` | `a5857a0bd2fb824288406611f0afd929f428c40ebe143c1f982e25ed79d20bab` |
 | `synthetic_candidates.csv` | `2e9cb4153172b7cf83349b8f49498a8598c621c81c5cfe14441a3fd6fbb57359` |
 | `synthetic_interviews.csv` | `07857ea73dbde578b5ead86b16536a967c9193a113b3e0387ee454b0ebb83a36` |
 | `Structured_Hiring_and_ATS_Architecture_Case_Study.pdf` | `6a90cc75ef1d4a4ba334a76b50bb12250c2201384eaf6fc97d90bc93c9a47586` |
-| `Structured_Hiring_and_ATS_Architecture_Mobile_Case_Study.pdf` | `bf22457062981dfd348ea3c403563d2996e050772328459c55053cee78a6fbd6` |
+| `Structured_Hiring_and_ATS_Architecture_Mobile_Case_Study.pdf` | `4e8b208c0f5d499c9ce2dde3c08b0e2d3cb0a0bc6c2d032818db303cd70429c1` |
 | `docs/audit/visual/desktop-final-pages.png` | `0071bb1876852f3617d01b8dbf0236b050deb296ad10cfd63fca497814272d79` |
-| `docs/audit/visual/mobile-final-pages.png` | `4276410bf1a23e0c7f7890065b275774fdb34e3743e53a856eeb0aee314ba070` |
+| `docs/audit/visual/mobile-final-pages.png` | `18d08d3a7e5713e27bc0ededab12cb6088cb39f762096136016bc4ca7690b3b5` |
 | `vendor/chart.umd.min.js` | `206b6e8bb00fc7bba2c7ee80ca41db3e9e05ba7be0aa35abeba9cfd5357f5d0e` |
 
 ## Evidence boundary

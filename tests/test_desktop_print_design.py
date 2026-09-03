@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SLIDES = ROOT / "slides.html"
 DESKTOP_PDF = ROOT / "Structured_Hiring_and_ATS_Architecture_Case_Study.pdf"
 MOBILE_PDF = ROOT / "Structured_Hiring_and_ATS_Architecture_Mobile_Case_Study.pdf"
-MOBILE_SHA256 = "bf22457062981dfd348ea3c403563d2996e050772328459c55053cee78a6fbd6"
+MOBILE_SHA256 = "4e8b208c0f5d499c9ce2dde3c08b0e2d3cb0a0bc6c2d032818db303cd70429c1"
 
 TYPE_TARGETS = {
     "--print-cover": (54.0, 64.0),

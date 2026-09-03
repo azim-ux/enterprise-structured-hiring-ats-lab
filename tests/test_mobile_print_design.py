@@ -123,6 +123,29 @@ class MobilePrintDesignTests(unittest.TestCase):
                 with self.subTest(page=page, snippet=snippet):
                     self.assertIn(snippet, normalized)
 
+    def test_decorative_folios_do_not_interrupt_pdf_reading_order(self):
+        expected = {
+            1: ("Can 4,000 applications stay auditable?", "01"),
+            5: ("Built to be inspected.", "05"),
+        }
+        for page, (headline, decorative_folio) in expected.items():
+            completed = subprocess.run(
+                ["pdftotext", "-f", str(page), "-l", str(page), "-layout", str(PDF), "-"],
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            normalized = re.sub(r"\s+", " ", completed.stdout).strip()
+            with self.subTest(page=page):
+                self.assertIn(headline, normalized)
+                self.assertNotRegex(normalized, rf"(?<!\d){decorative_folio}(?!\d)")
+
+        self.assertNotRegex(
+            self.source,
+            r'<(?:div|span)[^>]*class="[^"]*cover-index[^"]*"[^>]*>\s*(?:01|05)\s*</(?:div|span)>',
+        )
+        self.assertNotRegex(self.source, r'<text\b[^>]*>\s*(?:01|05)\s*</text>')
+
     def test_rendered_text_stays_inside_page_bounds(self):
         root = pdf_xml()
         pages = root.findall("page")
